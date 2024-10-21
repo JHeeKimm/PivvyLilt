@@ -3,8 +3,8 @@
 import { SignUpSchema } from "@/lib/auth/schema";
 import { signUpAPI } from "@/lib/auth/api";
 import { AuthError } from "firebase/auth";
-import {pageRoutes} from '../apiRoutes'
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
+import { AUTH_ROUTES } from "@/constants/routes";
 
 export const createUser = async (_: any, formData: FormData) => {
   // 유효성 검사
@@ -26,7 +26,6 @@ export const createUser = async (_: any, formData: FormData) => {
     if (!response) {
       throw new Error("회원가입 중에 문제가 발생했습니다.");
     }
-    redirect(pageRoutes.login)
   } catch (err) {
     const error = err as AuthError;
     if (error.code === "auth/email-already-in-use") {
@@ -36,4 +35,5 @@ export const createUser = async (_: any, formData: FormData) => {
       errorMessage: "회원가입 중에 문제가 발생했습니다. 다시 시도해 주세요.",
     };
   }
+  redirect(AUTH_ROUTES.LOGIN);
 };

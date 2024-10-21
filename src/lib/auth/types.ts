@@ -22,9 +22,3 @@ export interface LoginResponse {
   nickName?: string;
   accessToken: string;
 }
-
-export type TSignUpFormError = {
-  nickName?: string[];
-  email?: string[];
-  password?: string[];
-};

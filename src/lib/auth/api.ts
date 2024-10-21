@@ -1,4 +1,4 @@
-import { auth, db } from "@/firebase";
+import { auth, db } from "@/lib/config/firebaseClient";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -6,6 +6,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { IUser, LoginRequest, LoginResponse, SignUpRequest } from "./types";
+import { cookies } from "next/headers";
 
 export const signUpAPI = async ({
   email,
@@ -35,25 +36,38 @@ export const signUpAPI = async ({
 export const loginAPI = async (
   loginData: LoginRequest
 ): Promise<LoginResponse> => {
-  try {
-    const { email, password } = loginData;
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const user = userCredential.user;
-    const token = await user.getIdToken();
+  const { email, password } = loginData;
+  const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  const user = userCredential.user;
 
-    // cookies.set('accessToken', token, {expires: 5});
+  const token = await user.getIdToken();
+  const refreshToken = user.refreshToken;
 
-    return {
-      uid: user.uid,
-      email: user.email ?? "",
-      nickName: user.displayName ?? "",
-      accessToken: token,
-    };
-  } catch (error) {
-    throw new Error("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
-  }
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+  cookies().set("accessToken", token, {
+    httpOnly: true,
+    secure: true,
+    expires: expiresAt,
+    sameSite: "lax",
+    path: "/",
+  });
+
+  cookies().set("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+  });
+
+  return {
+    uid: user.uid,
+    email: user.email ?? "",
+    nickName: user.displayName ?? "",
+    accessToken: token,
+  };
 };
