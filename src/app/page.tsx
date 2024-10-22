@@ -1,9 +1,11 @@
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import NavigationBar from "@/components/NavigationBar";
+
 export default function Home() {
   return (
     <div>
       <main>
-        <div>Nav</div>
+        <NavigationBar />
         <div>피드</div>
         <LogoutButton />
       </main>

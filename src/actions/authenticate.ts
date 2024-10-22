@@ -2,9 +2,9 @@
 
 import { LoginSchema } from "@/lib/auth/schema";
 import { AuthError } from "firebase/auth";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { loginAPI } from "@/lib/auth/api";
-import { BASE_URL } from "@/constants/routes";
+// import { BASE_URL } from "@/constants/routes";
 
 export const authenticate = async (_: unknown, formData: FormData) => {
   const validateFields = LoginSchema.safeParse({
@@ -26,6 +26,15 @@ export const authenticate = async (_: unknown, formData: FormData) => {
         errorMessage: "존재하지 않는 사용자입니다. 회원가입을 해주세요.",
       };
     }
+    // 로그인 성공 시 유저 정보를 반환
+    return {
+      success: true,
+      user: {
+        uid: response.uid,
+        email: response.email,
+        displayName: response.nickName || "",
+      },
+    };
   } catch (err) {
     const error = err as AuthError;
 
@@ -46,5 +55,5 @@ export const authenticate = async (_: unknown, formData: FormData) => {
         return { errorMessage: "입력 정보를 확인해주세요." };
     }
   }
-  redirect(BASE_URL);
+  // redirect(BASE_URL);
 };

@@ -62,10 +62,7 @@ export default function SignUpForm() {
           {state?.errorMessage && (
             <ErrorMessage message={state?.errorMessage} />
           )}
-          <Button
-            disabled={isPending}
-            className="bg-white border border-primary text-secondary-foreground"
-          >
+          <Button disabled={isPending} className="">
             회원가입
           </Button>
         </form>

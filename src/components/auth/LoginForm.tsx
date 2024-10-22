@@ -7,10 +7,29 @@ import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "../ErrorMessage";
 import { useFormState } from "react-dom";
 import { authenticate } from "@/actions/authenticate";
-import { AUTH_ROUTES } from "@/constants/routes";
+import { BASE_URL, AUTH_ROUTES } from "@/constants/routes";
+import { useAuthStore } from "@/store/auth/useAuthStore";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [state, formAction, isPending] = useFormState(authenticate, undefined);
+  const setUser = useAuthStore((state) => state.setUser);
+  const setIsLogin = useAuthStore((state) => state.setIsLogin);
+
+  useEffect(() => {
+    if (state?.success) {
+      const { uid, email, displayName } = state.user;
+      setUser({
+        uid,
+        email,
+        nickName: displayName,
+      });
+      setIsLogin(true);
+      router.push(BASE_URL);
+    }
+  }, [state, setUser, setIsLogin, router]);
 
   return (
     <div className="flex gap-x-20 justify-center items-center">
@@ -47,18 +66,18 @@ export default function LoginForm() {
           <Button disabled={isPending} className="">
             로그인
           </Button>
-          <Button
-            disabled={isPending}
-            className="bg-white border border-primary text-secondary-foreground"
-          >
-            회원가입
-          </Button>
         </form>
-        <Link className="text-sm text-sky-700" href={AUTH_ROUTES.LOGIN}>
+        <Link className="text-sm text-sky-700" href={AUTH_ROUTES.SIGN_UP}>
           아직 계정이 없으신가요?
         </Link>
+        {/* <Button
+          disabled={isPending}
+          className="bg-white border border-primary text-secondary-foreground"
+        >
+          회원가입
+        </Button> */}
       </div>
-      {/* <div className="basis-56">이미지</div> */}
+      <div className="basis-56">이미지</div>
     </div>
   );
 }
