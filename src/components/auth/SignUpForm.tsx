@@ -8,6 +8,7 @@ import { ErrorMessage } from "../ErrorMessage";
 import { useFormState } from "react-dom";
 import { createUser } from "@/actions/createUser";
 import { AUTH_ROUTES } from "@/constants/routes";
+import Logo from "../Logo";
 
 export default function SignUpForm() {
   const [state, formAction, isPending] = useFormState(createUser, undefined);
@@ -21,7 +22,8 @@ export default function SignUpForm() {
   return (
     <div className="flex gap-x-20 justify-center items-center">
       <div className="flex flex-col gap-y-6 items-center">
-        <form action={formAction} className="flex flex-col gap-y-6 min-w-72">
+        <Logo/>
+        <form action={formAction} className="flex flex-col gap-y-6 min-w-80">
           <h2 className="font-bold text-center">회원가입</h2>
           <div className="">
             <Label>Nickname</Label>

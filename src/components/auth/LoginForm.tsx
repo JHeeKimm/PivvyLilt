@@ -11,6 +11,7 @@ import { BASE_URL, AUTH_ROUTES } from "@/constants/routes";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Logo from "../Logo";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -32,9 +33,10 @@ export default function LoginForm() {
   }, [state, setUser, setIsLogin, router]);
 
   return (
-    <div className="flex gap-x-20 justify-center items-center">
+    <div className="flex md:flex-row flex-col gap-x-20 justify-center items-center">
       <div className="flex flex-col gap-y-6 items-center">
-        <form action={formAction} className="flex flex-col gap-y-6 min-w-72">
+        <Logo />
+        <form action={formAction} className="flex flex-col gap-y-6 min-w-80">
           <h2 className="font-bold text-center">로그인</h2>
           <div className="">
             <Label>Email</Label>
@@ -70,12 +72,6 @@ export default function LoginForm() {
         <Link className="text-sm text-sky-700" href={AUTH_ROUTES.SIGN_UP}>
           아직 계정이 없으신가요?
         </Link>
-        {/* <Button
-          disabled={isPending}
-          className="bg-white border border-primary text-secondary-foreground"
-        >
-          회원가입
-        </Button> */}
       </div>
       <div className="basis-56">이미지</div>
     </div>
