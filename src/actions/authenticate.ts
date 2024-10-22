@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { loginAPI } from "@/lib/auth/api";
 import { BASE_URL } from "@/constants/routes";
 
-export const authenticate = async (_: any, formData: FormData) => {
+export const authenticate = async (_: unknown, formData: FormData) => {
   const validateFields = LoginSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),

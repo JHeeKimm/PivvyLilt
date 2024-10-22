@@ -6,7 +6,7 @@ import { AuthError } from "firebase/auth";
 import { redirect } from "next/navigation";
 import { AUTH_ROUTES } from "@/constants/routes";
 
-export const createUser = async (_: any, formData: FormData) => {
+export const createUser = async (_: unknown, formData: FormData) => {
   // 유효성 검사
   const validateFields = SignUpSchema.safeParse({
     nickName: formData.get("nickName"),

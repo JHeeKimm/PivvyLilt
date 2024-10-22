@@ -1,4 +1,4 @@
-import { auth, db } from "@/lib/config/firebaseClient";
+import { auth, db } from "@/lib/config/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -43,25 +43,16 @@ export const loginAPI = async (
     password
   );
   const user = userCredential.user;
-
   const token = await user.getIdToken();
-  const refreshToken = user.refreshToken;
 
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   cookies().set("accessToken", token, {
-    httpOnly: true,
-    secure: true,
+    // httpOnly: true,
+    // secure: true,
     expires: expiresAt,
-    sameSite: "lax",
-    path: "/",
-  });
-
-  cookies().set("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
+    // sameSite: "lax",
+    // path: "/",
   });
 
   return {
