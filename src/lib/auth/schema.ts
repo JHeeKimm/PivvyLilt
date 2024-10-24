@@ -3,7 +3,7 @@ import { z } from "zod";
 const easyPatterns = ["123456", "password", "qwerty", "asdf", "admin"];
 
 export const SignUpSchema = z.object({
-  nickName: z
+  nickname: z
     .string()
     .min(1, { message: "닉네임을 입력해주세요." })
     .regex(/^[a-zA-Zㄱ-ㅎ가-힣]+$/, {

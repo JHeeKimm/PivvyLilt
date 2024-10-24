@@ -11,7 +11,7 @@ import { cookies } from "next/headers";
 export const signUpAPI = async ({
   email,
   password,
-  nickName,
+  nickname,
 }: SignUpRequest): Promise<IUser> => {
   const userCredential = await createUserWithEmailAndPassword(
     auth,
@@ -20,16 +20,16 @@ export const signUpAPI = async ({
   );
   const user = userCredential.user;
 
-  await updateProfile(user, { displayName: nickName });
+  await updateProfile(user, { displayName: nickname });
   await setDoc(doc(db, "users", user.uid), {
-    nickName,
+    nickname,
     email,
   });
 
   return {
     uid: user.uid,
     email: user.email!,
-    nickName,
+    nickname,
   };
 };
 
@@ -57,8 +57,10 @@ export const loginAPI = async (
 
   return {
     uid: user.uid,
+    bio: user.bio ?? "",
     email: user.email ?? "",
-    nickName: user.displayName ?? "",
+    nickname: user.displayName ?? "",
+    profileImage: user.profile_image ?? "",
     accessToken: token,
   };
 };

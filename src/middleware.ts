@@ -18,8 +18,14 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL(BASE_URL, request.nextUrl));
   }
 
-  // 그 외의 경우 요청 진행
-  return NextResponse.next();
+  // 그 외의 경우 요청 진행 (요청 경로를 헤더에 저장)
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', pathname);
+  return  NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    }
+  });
 }
 
 export const config = {

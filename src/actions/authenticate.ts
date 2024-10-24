@@ -32,7 +32,7 @@ export const authenticate = async (_: unknown, formData: FormData) => {
       user: {
         uid: response.uid,
         email: response.email,
-        displayName: response.nickName || "",
+        displayName: response.nickname || "",
       },
     };
   } catch (err) {
