@@ -14,16 +14,18 @@ import {
 } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { CommentIcon } from "../common/icons/CommentIcon";
-import { FeedCardProps } from "@/lib/posts/types";
+import { FeedItemProps } from "@/lib/posts/types";
 
-export default function FeedCard({
+export default function PostCard({
+  postId,
   title,
   content,
   imageUrl,
   userId,
   createdAt,
-}: FeedCardProps) {
+}: FeedItemProps) {
   const defaultImageUrl = "/profile.jpg";
+
   return (
     <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
       {/* Header: User Info and 더보기 Button */}

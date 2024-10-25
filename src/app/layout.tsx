@@ -13,8 +13,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   const headerList = headers();
   const currentPath = headerList.get("x-pathname") || "";
@@ -34,6 +36,8 @@ export default function RootLayout({
             </div>
           )}
           <main>{children}</main>
+          {modal}
+          <div id="modal-root"></div>
         </div>
       </body>
     </html>

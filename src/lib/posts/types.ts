@@ -7,7 +7,8 @@ export type TPosts = {
   created_at: string;
 };
 
-export interface FeedCardProps {
+export interface FeedItemProps {
+  postId: string;
   title: string;
   content: string;
   imageUrl?: string;

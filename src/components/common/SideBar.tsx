@@ -11,7 +11,7 @@ export default function SideBar() {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <aside className="hidden md:flex h-screen w-64 bg-gray-600 text-white flex-col p-4 space-y-6 transition-transform duration-300 md:translate-x-0 -translate-x-full">
+    <aside className="hidden md:flex h-screen w-64 bg-gray-600 text-white flex-col p-4 space-y-6 transition-transform duration-300 md:translate-x-0 -translate-x-full z-10">
       <div className="flex flex-col items-center space-y-2 pb-6 border-b border-gray-700">
         <Image
           src="/profile.jpg"

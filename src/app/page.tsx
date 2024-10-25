@@ -1,4 +1,4 @@
-import FeedCard from "@/components/feed/FeedCard";
+import FeedItem from "@/components/posts/FeedItem";
 import { TPosts } from "@/lib/posts/types";
 
 export default async function FeedPage() {
@@ -14,8 +14,9 @@ export default async function FeedPage() {
     <div className="p-8 gap-8 flex flex-wrap items-center justify-center md:justify-start">
       {posts.length > 0 ? (
         posts.map((post) => (
-          <FeedCard
+          <FeedItem
             key={post.id}
+            postId={post.id}
             title={post.title}
             content={post.content}
             imageUrl={post.image_url}
