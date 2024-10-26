@@ -10,17 +10,17 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ImagePlus } from "lucide-react";
 
-export default function NewPostForm() {
+export default function NewPostPage() {
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="bg-white p-6 rounded-lg w-96 shadow-lg">
       <CardHeader>
-        <CardTitle>새 게시글 작성</CardTitle>
+        <CardTitle className="text-xl text-center">새 게시글 작성</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <Label htmlFor="image-upload" className="block mb-2">
+          {/* <Label htmlFor="image-upload" className="block mb-2">
             이미지 업로드
-          </Label>
+          </Label> */}
           <div className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-colors">
             <Input
               id="image-upload"
@@ -61,7 +61,13 @@ export default function NewPostForm() {
           <Input id="content" placeholder="게시글 내용을 입력하세요" />
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="gap-3">
+        <Button
+          variant="secondary"
+          className="w-full text-black bg-white border border-black"
+        >
+          취소
+        </Button>
         <Button className="w-full">게시글 등록</Button>
       </CardFooter>
     </Card>

@@ -35,7 +35,7 @@ export default function RootLayout({
               </div>
             </div>
           )}
-          <main>{children}</main>
+          <main className="flex justify-center items-center">{children}</main>
           {modal}
           <div id="modal-root"></div>
         </div>
