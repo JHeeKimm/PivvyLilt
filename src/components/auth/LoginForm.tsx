@@ -4,14 +4,14 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ErrorMessage } from "../ErrorMessage";
+import { ErrorMessage } from "../common/ErrorMessage";
 import { useFormState } from "react-dom";
 import { authenticate } from "@/actions/authenticate";
 import { BASE_URL, AUTH_ROUTES } from "@/constants/routes";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Logo from "../Logo";
+import Logo from "../common/Logo";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -25,7 +25,7 @@ export default function LoginForm() {
       setUser({
         uid,
         email,
-        nickName: displayName,
+        nickname: displayName,
       });
       setIsLogin(true);
       router.push(BASE_URL);
@@ -35,7 +35,7 @@ export default function LoginForm() {
   return (
     <div className="flex md:flex-row flex-col gap-x-20 justify-center items-center">
       <div className="flex flex-col gap-y-6 items-center">
-        <Logo />
+        <Logo withBorder={true} />
         <form action={formAction} className="flex flex-col gap-y-6 min-w-80">
           <h2 className="font-bold text-center">로그인</h2>
           <div className="">

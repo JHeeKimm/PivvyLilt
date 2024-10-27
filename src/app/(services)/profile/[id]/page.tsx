@@ -6,7 +6,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      마이페이지 프로필페이지 <div>유저 정보{user?.nickName}</div>
+      마이페이지 프로필페이지 <div>유저 정보{user?.nickname}</div>
     </div>
   );
 }

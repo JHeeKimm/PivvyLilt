@@ -9,7 +9,7 @@ import { AUTH_ROUTES } from "@/constants/routes";
 export const createUser = async (_: unknown, formData: FormData) => {
   // 유효성 검사
   const validateFields = SignUpSchema.safeParse({
-    nickName: formData.get("nickName"),
+    nickname: formData.get("nickname"),
     email: formData.get("email"),
     password: formData.get("password"),
   });
@@ -20,9 +20,9 @@ export const createUser = async (_: unknown, formData: FormData) => {
   }
 
   //
-  const { nickName, email, password } = validateFields.data;
+  const { nickname, email, password } = validateFields.data;
   try {
-    const response = await signUpAPI({ nickName, email, password });
+    const response = await signUpAPI({ nickname, email, password });
     if (!response) {
       throw new Error("회원가입 중에 문제가 발생했습니다.");
     }
