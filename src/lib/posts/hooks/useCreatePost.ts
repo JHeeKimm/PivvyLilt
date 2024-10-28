@@ -23,7 +23,7 @@ export const useCreatePost = () => {
     onSuccess: () => {
       addToast("게시글 등록 성공!", "success");
       router.back();
-      // queryClient.invalidateQueries({ queryKey: [POST_KEY] });
+      queryClient.invalidateQueries({ queryKey: [POST_KEY] });
     },
     onError: (error: Error) => {
       addToast("게시글 등록에 실패하였습니다.", "error");

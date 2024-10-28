@@ -5,6 +5,8 @@ export type TPosts = {
   imageUrl?: string;
   userId: string;
   createdAt: string;
+  commentsCount: number;
+  likesCount: number;
 };
 
 export interface FeedItemProps {
