@@ -1,33 +1,29 @@
+"use client";
+
 import PostCard from "@/components/posts/PostCard";
-import { FeedItemProps } from "@/lib/posts/types";
+import { usePost } from "@/lib/posts/hooks/usePost";
 
-export default async function PostDetailPage({
-  postId,
-  title,
-  content,
-  imageUrl,
-  userId,
-  createdAt,
-}: FeedItemProps) {
-  // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
-  //   cache: "no-store",
-  // });
+export default function PostDetailPage({
+  params: { postId },
+}: {
+  params: { postId: string };
+}) {
+  const { data: post, isLoading, error } = usePost(postId);
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>오류가 발생했습니다. {error.message}</p>;
 
-  // if (!res.ok) {
-  //   throw new Error("Failed to fetch posts");
-  // }
-  // const { posts }: { posts: TPosts[] } = await res.json();
-
-  return (
+  return post ? (
     <div>
       <PostCard
-        postId={postId}
-        title={title}
-        content={content}
-        imageUrl={imageUrl}
-        userId={userId}
-        createdAt={createdAt}
+        postId={post.id}
+        title={post.title}
+        content={post.content}
+        imageUrl={post.imageUrl}
+        userId={post.userId}
+        createdAt={post.createdAt}
       />
     </div>
+  ) : (
+    <p>게시물을 찾을 수 없습니다.</p>
   );
 }

@@ -25,6 +25,7 @@ export default function Modal({ children }: { children: ReactNode }) {
       onClose={() => router.back()}
       // 모달의 바깥 클릭 시, 뒤로 가기(모달 닫기)
       onClick={(e) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((e.target as any).nodeName === "DIALOG") {
           router.back();
         }

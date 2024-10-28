@@ -2,9 +2,11 @@ export type TPosts = {
   id: string;
   title: string;
   content: string;
-  image_url?: string;
-  user_id: string;
-  created_at: string;
+  imageUrl?: string;
+  userId: string;
+  createdAt: string;
+  commentsCount: number;
+  likesCount: number;
 };
 
 export interface FeedItemProps {
@@ -14,4 +16,11 @@ export interface FeedItemProps {
   imageUrl?: string;
   userId: string;
   createdAt: string;
+}
+
+export interface INewPost {
+  title: string;
+  content: string;
+  image?: File | null;
+  userId?: string;
 }

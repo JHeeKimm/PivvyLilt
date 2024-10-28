@@ -23,6 +23,8 @@ export default function PostCard({
   imageUrl,
   userId,
   createdAt,
+  likesCount,
+  commentsCount,
 }: FeedItemProps) {
   const defaultImageUrl = "/profile.jpg";
 
@@ -55,7 +57,7 @@ export default function PostCard({
       {/* Post Image */}
       <CardContent className="p-0 bg-gray-200 relative min-h-48 max-h-80">
         <Image
-          src={defaultImageUrl}
+          src={imageUrl ? imageUrl : defaultImageUrl}
           alt="User profile"
           layout="fill"
           objectFit="cover"
