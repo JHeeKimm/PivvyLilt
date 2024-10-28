@@ -11,8 +11,7 @@ export default function FeedItem() {
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>오류가 발생했습니다. {error.message}</p>;
-  console.log("postssss", posts);
-  console.log("postssss length", posts.length);
+
   return (
     <>
       <AddPostButton />

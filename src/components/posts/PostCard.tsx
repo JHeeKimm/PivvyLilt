@@ -27,7 +27,7 @@ export default function PostCard({
   commentsCount,
 }: FeedItemProps) {
   const defaultImageUrl = "/profile.jpg";
-  console.log("imageUrlimageUrlimageUrl", imageUrl);
+
   return (
     <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
       {/* Header: User Info and 더보기 Button */}
