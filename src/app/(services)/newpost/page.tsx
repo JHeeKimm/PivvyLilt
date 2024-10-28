@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useState } from "react";
-import { TPosts, INewPost } from "@/lib/posts/types";
+import { INewPost } from "@/lib/posts/types";
 import { postSchema, PostFormData } from "@/lib/posts/schema";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
@@ -146,12 +146,13 @@ export default function NewPostPage() {
             type="button"
             variant="secondary"
             className="w-full text-black bg-white border border-black"
-            // onClick={() => setValue("title", "")}
+            disabled={isLoading}
+            onClick={() => router.back()}
           >
             취소
           </Button>
-          <Button type="submit" className="w-full">
-            게시글 등록
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? "등록 중..." : "등록"}
           </Button>
         </CardFooter>
       </form>

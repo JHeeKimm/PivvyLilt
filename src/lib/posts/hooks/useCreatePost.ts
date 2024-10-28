@@ -1,9 +1,10 @@
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { TPosts } from "@/lib/posts/types";
 import { useToastStore } from "@/store/toast/useToastStore";
 import { POST_KEY } from "../key";
 
 export const useCreatePost = () => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const { addToast } = useToastStore();
 
@@ -21,6 +22,7 @@ export const useCreatePost = () => {
     },
     onSuccess: () => {
       addToast("게시글 등록 성공!", "success");
+      router.back();
       // queryClient.invalidateQueries({ queryKey: [POST_KEY] });
     },
     onError: (error: Error) => {
