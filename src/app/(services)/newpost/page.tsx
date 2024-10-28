@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useState } from "react";
 import { INewPost } from "@/lib/posts/types";
-import { postSchema, PostFormData } from "@/lib/posts/schema";
+import { postSchema } from "@/lib/posts/schema";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { useCreatePost } from "@/lib/posts/hooks/useCreatePost";
@@ -32,6 +32,7 @@ export default function NewPostPage() {
     handleSubmit,
     formState: { errors },
     setValue,
+    setFocus,
     reset,
   } = useForm<INewPost>({
     resolver: zodResolver(postSchema),
@@ -57,6 +58,14 @@ export default function NewPostPage() {
     router.push(BASE_URL);
   };
 
+  const onError = () => {
+    if (errors.title) {
+      setFocus("title");
+    } else if (errors.content) {
+      setFocus("content");
+    }
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     console.log("file", file);
@@ -75,7 +84,7 @@ export default function NewPostPage() {
       <CardHeader>
         <CardTitle className="text-xl text-center">새 게시글 작성</CardTitle>
       </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
         <CardContent className="space-y-4">
           <div>
             {/* <Label htmlFor="image-upload" className="block mb-2">
