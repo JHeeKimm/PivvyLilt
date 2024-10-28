@@ -5,6 +5,7 @@ import { PUBLIC_ROUTES } from "@/constants/routes";
 import NavigationBar from "@/components/common/NavigationBar";
 import SideBar from "@/components/common/SideBar";
 import Logo from "@/components/common/Logo";
+import Providers from "./provider";
 
 export const metadata: Metadata = {
   title: "PivviLilt",
@@ -25,20 +26,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="flex flex-col md:flex-row justify-between">
-          {!isPublicRoute && (
-            <div className="md:h-screen flex flex-col">
-              <Logo />
-              <div>
-                <SideBar />
-                <NavigationBar />
+        <Providers>
+          <div className="flex flex-col md:flex-row justify-between">
+            {!isPublicRoute && (
+              <div className="md:h-screen flex flex-col">
+                <Logo />
+                <div>
+                  <SideBar />
+                  <NavigationBar />
+                </div>
               </div>
-            </div>
-          )}
-          <main className="flex justify-center items-center">{children}</main>
-          {modal}
-          <div id="modal-root"></div>
-        </div>
+            )}
+            <main className="flex justify-center items-center">{children}</main>
+            {modal}
+            <div id="modal-root"></div>
+          </div>
+        </Providers>
       </body>
     </html>
   );

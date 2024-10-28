@@ -12,8 +12,8 @@ export default async function FeedPage() {
   }
   const { posts }: { posts: TPosts[] } = await res.json();
   return (
-    <div className="p-8 gap-8 flex flex-wrap items-center justify-center md:justify-start">
-      <AddPostButton/>
+    <div className="relative md:mt-10 mb-10 p-8 gap-8 flex flex-wrap items-center justify-center md:justify-start">
+      <AddPostButton />
       {posts.length > 0 ? (
         posts.map((post) => (
           <FeedItem
@@ -21,9 +21,9 @@ export default async function FeedPage() {
             postId={post.id}
             title={post.title}
             content={post.content}
-            imageUrl={post.image_url}
-            userId={post.user_id}
-            createdAt={post.created_at}
+            imageUrl={post.imageUrl}
+            userId={post.userId}
+            createdAt={post.createdAt}
           />
         ))
       ) : (
