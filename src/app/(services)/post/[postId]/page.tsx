@@ -2,6 +2,8 @@
 
 import PostCard from "@/components/posts/PostCard";
 import { usePost } from "@/lib/posts/hooks/usePost";
+import EditPostForm from "@/components/posts/EditPostForm";
+import { useEditStore } from "@/store/posts/useEditStore";
 
 export default function PostDetailPage({
   params: { postId },
@@ -9,19 +11,21 @@ export default function PostDetailPage({
   params: { postId: string };
 }) {
   const { data: post, isLoading, error } = usePost(postId);
+  const { isEditing, startEditing, stopEditing } = useEditStore(); 
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>오류가 발생했습니다. {error.message}</p>;
 
   return post ? (
     <div>
-      <PostCard
-        postId={post.id}
-        title={post.title}
-        content={post.content}
-        imageUrl={post.imageUrl}
-        userId={post.userId}
-        createdAt={post.createdAt}
-      />
+      {isEditing ? (
+        <EditPostForm
+          post={post}
+          onCancel={stopEditing}
+        />
+      ) : (
+        <PostCard postId={post.id} onEdit={startEditing} {...post} />
+      )}
     </div>
   ) : (
     <p>게시물을 찾을 수 없습니다.</p>
