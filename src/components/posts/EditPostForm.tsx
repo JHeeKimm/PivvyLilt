@@ -14,47 +14,58 @@ import { ImagePlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+// import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { INewPost } from "@/lib/posts/types";
+import { EditPostFormProps } from "@/lib/posts/types";
 import { postSchema } from "@/lib/posts/schema";
-import { useAuthStore } from "@/store/auth/useAuthStore";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
-import { useCreatePost } from "@/lib/posts/hooks/useCreatePost";
-import { BASE_URL } from "@/constants/routes";
-import { useRouter } from "next/navigation";
+import { useEditPost } from "@/lib/posts/hooks/useEditPost";
 
-export default function NewPostForm() {
-  const router = useRouter();
-  const { user } = useAuthStore();
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+export default function EditPostForm({ post, onCancel }: EditPostFormProps) {
+  // const router = useRouter();
+  const [imagePreview, setImagePreview] = useState<File | string | null>(
+    post.imageUrl || null
+  );
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     setFocus,
-    reset,
   } = useForm<INewPost>({
     resolver: zodResolver(postSchema),
+    defaultValues: {
+      title: post.title,
+      content: post.content,
+      image: post.imageUrl,
+    },
   });
-  const { mutateAsync, isPending: isLoading } = useCreatePost();
 
-  const onSubmit = async (data: INewPost) => {
+  const { mutateAsync: savePost, isPending: isSaving } = useEditPost(post.id);
+
+  const handleFormSubmit = async (data: INewPost) => {
     console.log(data);
 
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("content", data.content);
-    formData.append("userId", user?.uid || "");
+    formData.append("updatedAt", new Date().toLocaleString());
 
+    // 이미지를 변경하지 않았을 때 기존 이미지를 유지
+    if (typeof imagePreview === "string") {
+      formData.append("imageUrl", imagePreview);
+    }
+
+    // 새 이미지 파일이 있을 때 추가
     if (data.image) {
       formData.append("image", data.image);
     }
 
-    await mutateAsync(formData);
-    reset();
-    alert("게시글 등록 성공!");
-    router.push(BASE_URL);
+    await savePost(formData);
+
+    // stopEditing 수정 모드 종료
+    onCancel();
   };
 
   const onError = () => {
@@ -83,12 +94,9 @@ export default function NewPostForm() {
       <CardHeader>
         <CardTitle className="text-xl text-center">새 게시글 작성</CardTitle>
       </CardHeader>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
+      <form onSubmit={handleSubmit(handleFormSubmit, onError)}>
         <CardContent className="space-y-4">
           <div>
-            {/* <Label htmlFor="image-upload" className="block mb-2">
-            이미지 업로드
-          </Label> */}
             <div className="flex items-center justify-center w-full border-2 border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-colors">
               <Input
                 id="image-upload"
@@ -98,11 +106,8 @@ export default function NewPostForm() {
                 {...register("image")}
                 onChange={handleImageChange}
               />
-              <label
-                htmlFor="image-upload"
-                className="h-52 flex flex-col items-center justify-center"
-              >
-                {imagePreview ? (
+              <label htmlFor="image-upload" className="h-52">
+                {typeof imagePreview === "string" ? (
                   <Image
                     src={imagePreview}
                     alt="Preview"
@@ -156,13 +161,13 @@ export default function NewPostForm() {
             type="button"
             variant="secondary"
             className="w-full text-black bg-white border border-black"
-            disabled={isLoading}
-            onClick={() => router.back()}
+            disabled={isSaving}
+            onClick={() => onCancel()}
           >
             취소
           </Button>
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "등록 중..." : "등록"}
+          <Button type="submit" className="w-full" disabled={isSaving}>
+            {isSaving ? "저장 중..." : "저장"}
           </Button>
         </CardFooter>
       </form>

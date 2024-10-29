@@ -16,11 +16,19 @@ export interface FeedItemProps {
   imageUrl?: string;
   userId: string;
   createdAt: string;
+  commentsCount: number;
+  likesCount: number;
+  onEdit?: () => void;
 }
 
 export interface INewPost {
   title: string;
   content: string;
-  image?: File | null;
+  image?: File | string | null;
   userId?: string;
+}
+
+export interface EditPostFormProps {
+  post: TPosts;
+  onCancel: () => void;
 }

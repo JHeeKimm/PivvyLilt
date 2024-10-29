@@ -15,6 +15,9 @@ import {
 import Image from "next/image";
 import { CommentIcon } from "../common/icons/CommentIcon";
 import { FeedItemProps } from "@/lib/posts/types";
+import { useAuthStore } from "@/store/auth/useAuthStore";
+import { useParams } from "next/navigation";
+import { useDeltePost } from "@/lib/posts/hooks/useDeletePost";
 
 export default function PostCard({
   postId,
@@ -23,10 +26,23 @@ export default function PostCard({
   imageUrl,
   userId,
   createdAt,
-  likesCount,
-  commentsCount,
+  // likesCount,
+  // commentsCount,
+  onEdit,
 }: FeedItemProps) {
   const defaultImageUrl = "/profile.jpg";
+  const params = useParams();
+  const { user } = useAuthStore();
+
+  const isDetailPage = params?.postId === postId;
+  const isAuthor = user?.uid === userId;
+
+  const { mutateAsync: deletePost } = useDeltePost(postId);
+  const handleDelete = async () => {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+      await deletePost();
+    }
+  };
 
   return (
     <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
@@ -82,6 +98,24 @@ export default function PostCard({
             <Share1Icon className="h-5 w-5" />
           </Button>
         </div>
+        {isDetailPage && isAuthor && (
+          <div>
+            <Button
+              variant="ghost"
+              className="text-gray-500"
+              onClick={() => onEdit?.()}
+            >
+              수정
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-gray-500"
+              onClick={handleDelete}
+            >
+              삭제
+            </Button>
+          </div>
+        )}
       </CardFooter>
     </Card>
   );

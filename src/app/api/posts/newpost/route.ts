@@ -26,8 +26,8 @@ export async function POST(req: Request) {
     await addDoc(collection(db, "posts"), {
       title,
       content,
-      imageUrl: imageUrl,
-      userId: userId,
+      imageUrl,
+      userId,
       createdAt: new Date().toLocaleString(),
       commentsCount: 0,
       likesCount: 0,
