@@ -21,11 +21,14 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (state?.success) {
-      const { uid, email, displayName } = state.user;
+      const { uid, email, nickname, bio, profileImage } = state.user;
+      console.log("LoginForm state.user", state.user);
       setUser({
         uid,
         email,
-        nickname: displayName,
+        nickname,
+        bio,
+        profileImage,
       });
       setIsLogin(true);
       router.push(BASE_URL);
