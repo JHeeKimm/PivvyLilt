@@ -8,8 +8,9 @@ export async function GET() {
     const postsSnapshot = await getDocs(postsRef);
 
     const posts = postsSnapshot.docs.map((doc) => ({
-      id: doc.id,
       ...doc.data(),
+      id: doc.id,
+      createdAt: doc.data().createdAt.toDate().toLocaleString(),
     }));
     return NextResponse.json({ posts });
   } catch (error) {

@@ -22,8 +22,9 @@ export async function GET(
   const q = query(commentsRef, where("postId", "==", postId));
   const commentSnap = await getDocs(q);
   const comments = commentSnap.docs.map((doc) => ({
-    id: doc.id,
     ...doc.data(),
+    id: doc.id,
+    createdAt: doc.data().createdAt.toDate().toLocaleString(),
   }));
 
   return NextResponse.json(comments);

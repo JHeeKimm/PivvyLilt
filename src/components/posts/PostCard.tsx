@@ -19,6 +19,7 @@ import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useParams } from "next/navigation";
 import { useDeltePost } from "@/lib/posts/hooks/useDeletePost";
 import CommentsSection from "../comment/CommentsSection";
+import { elapsedTime } from "@/utils/elapsedTime";
 
 export default function PostCard({
   postId,
@@ -44,7 +45,7 @@ export default function PostCard({
       await deletePost();
     }
   };
-
+  console.log("PostCard createdAt", createdAt);
   return (
     <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
       {/* Header: User Info and 더보기 Button */}
@@ -61,7 +62,7 @@ export default function PostCard({
           <div>
             <CardTitle className="text-sm font-semibold">{userId}</CardTitle>
             <CardDescription className="text-xs text-gray-500">
-              {createdAt}
+              {elapsedTime(createdAt)}
             </CardDescription>
           </div>
         </div>

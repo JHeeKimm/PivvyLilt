@@ -5,6 +5,7 @@ import { useEditComment } from "@/lib/comments/hooks/useEditComment";
 import { useDeleteComment } from "@/lib/comments/hooks/useDeleteComment";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useState } from "react";
+import { elapsedTime } from "@/utils/elapsedTime";
 
 export default function CommentItem({
   commentId,
@@ -73,7 +74,7 @@ export default function CommentItem({
       ) : (
         <>
           <p className="px-2 text-gray-800">{comment}</p>
-          <span className="text-gray-400">{createdAt}</span>
+          <span className="text-gray-400">{elapsedTime(createdAt)}</span>
           {isAuthor && (
             <div className="">
               <Button

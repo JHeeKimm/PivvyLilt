@@ -1,5 +1,11 @@
 import { db, storage } from "@/lib/config/firebase";
-import { deleteDoc, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import {
   ref,
   uploadBytes,
@@ -24,9 +30,12 @@ export async function GET(
       );
     }
     const post = {
-      id: docSnapshot.id,
       ...docSnapshot.data(),
+      id: docSnapshot.id,
+      createdAt: docSnapshot.data().createdAt.toDate().toLocaleString(),
     };
+
+    console.log("post[id] date", post.createdAt);
     return NextResponse.json({ post });
   } catch (error) {
     console.error("Error fetching post: ", error);
