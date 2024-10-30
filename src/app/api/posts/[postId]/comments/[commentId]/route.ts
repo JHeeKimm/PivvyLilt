@@ -1,5 +1,5 @@
 import { db } from "@/lib/config/firebase";
-import { doc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, updateDoc, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
@@ -19,7 +19,7 @@ export async function PATCH(
     const commentRef = doc(db, "comments", commentId);
     await updateDoc(commentRef, {
       comment,
-      updatedAt: new Date().toLocaleString(),
+      updatedAt: serverTimestamp(),
     });
 
     return NextResponse.json({ commentId, comment });

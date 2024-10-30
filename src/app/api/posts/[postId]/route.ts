@@ -1,5 +1,5 @@
 import { db, storage } from "@/lib/config/firebase";
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import {
   ref,
   uploadBytes,
@@ -87,7 +87,7 @@ export async function PUT(
       title,
       content,
       imageUrl,
-      updatedAt: new Date().toLocaleString(),
+      updatedAt: serverTimestamp(),
     });
 
     return NextResponse.json({ success: true });

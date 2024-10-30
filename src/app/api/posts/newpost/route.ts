@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db, storage } from "@/lib/config/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export async function POST(req: NextRequest) {
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       content,
       imageUrl,
       userId,
-      createdAt: new Date().toLocaleString(),
+      createdAt: serverTimestamp(),
       commentsCount: 0,
       likesCount: 0,
     });

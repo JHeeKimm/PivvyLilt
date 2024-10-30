@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/config/firebase";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  serverTimestamp,
+  where,
+} from "firebase/firestore";
 
 export async function GET(
   req: NextRequest,
@@ -34,7 +41,7 @@ export async function POST(req: NextRequest) {
     comment,
     postId,
     userId,
-    createdAt: new Date().toLocaleString(),
+    createdAt: serverTimestamp(),
   };
 
   const docRef = await addDoc(commentsRef, newComment);
