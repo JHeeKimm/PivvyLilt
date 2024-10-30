@@ -45,8 +45,6 @@ export default function EditPostForm({ post, onCancel }: EditPostFormProps) {
   const { mutateAsync: savePost, isPending: isSaving } = useEditPost(post.id);
 
   const handleFormSubmit = async (data: INewPost) => {
-    console.log(data);
-
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("content", data.content);
@@ -92,7 +90,7 @@ export default function EditPostForm({ post, onCancel }: EditPostFormProps) {
   return (
     <Card className="bg-white p-6 rounded-lg shadow-lg">
       <CardHeader>
-        <CardTitle className="text-xl text-center">새 게시글 작성</CardTitle>
+        <CardTitle className="text-xl text-center">게시글 수정</CardTitle>
       </CardHeader>
       <form onSubmit={handleSubmit(handleFormSubmit, onError)}>
         <CardContent className="space-y-4">
@@ -113,7 +111,7 @@ export default function EditPostForm({ post, onCancel }: EditPostFormProps) {
                     alt="Preview"
                     width={336}
                     height={180}
-                    className="h-full object-contain rounded-lg"
+                    className="h-full object-contain"
                   />
                 ) : (
                   <>
