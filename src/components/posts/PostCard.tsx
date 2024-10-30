@@ -45,7 +45,6 @@ export default function PostCard({
       await deletePost();
     }
   };
-  console.log("PostCard createdAt", createdAt);
   return (
     <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
       {/* Header: User Info and 더보기 Button */}

@@ -35,7 +35,6 @@ export async function GET(
       createdAt: docSnapshot.data().createdAt.toDate().toLocaleString(),
     };
 
-    console.log("post[id] date", post.createdAt);
     return NextResponse.json({ post });
   } catch (error) {
     console.error("Error fetching post: ", error);

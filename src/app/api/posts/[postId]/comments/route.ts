@@ -4,6 +4,7 @@ import {
   addDoc,
   collection,
   getDocs,
+  orderBy,
   query,
   serverTimestamp,
   where,
@@ -18,16 +19,29 @@ export async function GET(
   if (!postId)
     return NextResponse.json({ error: "postId is required" }, { status: 400 });
 
-  const commentsRef = collection(db, "comments");
-  const q = query(commentsRef, where("postId", "==", postId));
-  const commentSnap = await getDocs(q);
-  const comments = commentSnap.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-    createdAt: doc.data().createdAt.toDate().toLocaleString(),
-  }));
+  try {
+    const commentsRef = collection(db, "comments");
+    const q = query(
+      commentsRef,
+      where("postId", "==", postId),
+      orderBy("createdAt", "desc")
+    );
 
-  return NextResponse.json(comments);
+    const commentSnap = await getDocs(q);
+    const comments = commentSnap.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+      createdAt: doc.data().createdAt.toDate().toLocaleString(),
+    }));
+
+    return NextResponse.json(comments);
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch comments" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {
