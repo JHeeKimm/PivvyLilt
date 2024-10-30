@@ -21,7 +21,6 @@ import { EditPostFormProps } from "@/lib/posts/types";
 import { postSchema } from "@/lib/posts/schema";
 import { ErrorMessage } from "@/components/common/ErrorMessage";
 import { useEditPost } from "@/lib/posts/hooks/useEditPost";
-import { serverTimestamp } from "firebase/firestore";
 
 export default function EditPostForm({ post, onCancel }: EditPostFormProps) {
   // const router = useRouter();
@@ -49,7 +48,6 @@ export default function EditPostForm({ post, onCancel }: EditPostFormProps) {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("content", data.content);
-    formData.append("updatedAt", serverTimestamp());
 
     // 이미지를 변경하지 않았을 때 기존 이미지를 유지
     if (typeof imagePreview === "string") {
