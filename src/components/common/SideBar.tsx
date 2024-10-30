@@ -6,6 +6,7 @@ import { HomeIcon, PersonIcon } from "@radix-ui/react-icons";
 import { ChatIcon } from "./icons/ChatIcon";
 import NavLink from "./NavLink";
 import Image from "next/image";
+import { LogoutButton } from "../auth/LogoutButton";
 
 export default function SideBar() {
   const user = useAuthStore((state) => state.user);
@@ -39,6 +40,9 @@ export default function SideBar() {
             icon={<PersonIcon />}
             text="Profile"
           />
+        </div>
+        <div className="pt-11">
+          <LogoutButton />
         </div>
       </nav>
     </aside>

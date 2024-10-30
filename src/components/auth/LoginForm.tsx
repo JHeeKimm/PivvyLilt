@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useFormState } from "react-dom";
 import { authenticate } from "@/actions/authenticate";
-import { BASE_URL, AUTH_ROUTES } from "@/constants/routes";
+import { AUTH_ROUTES } from "@/constants/routes";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -31,7 +31,8 @@ export default function LoginForm() {
         profileImage,
       });
       setIsLogin(true);
-      router.push(BASE_URL);
+      // router.replace(BASE_URL);
+      router.refresh();
     }
   }, [state, setUser, setIsLogin, router]);
 
