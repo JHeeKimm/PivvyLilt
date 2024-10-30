@@ -1,7 +1,7 @@
 "use client";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useRouter } from "next/navigation";
-import { AUTH_ROUTES } from "@/constants/routes";
+// import { AUTH_ROUTES } from "@/constants/routes";
 
 export const LogoutButton = () => {
   const router = useRouter();
@@ -10,7 +10,8 @@ export const LogoutButton = () => {
   const handleLogout = () => {
     console.log("로그아웃 버튼 클릭됨");
     logout();
-    router.push(AUTH_ROUTES.LOGIN);
+    // router.replace(AUTH_ROUTES.LOGIN);
+    router.refresh();
   };
 
   return <button onClick={handleLogout}>로그아웃</button>;

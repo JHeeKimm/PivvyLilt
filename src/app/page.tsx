@@ -1,15 +1,9 @@
-import { LogoutButton } from "@/components/auth/LogoutButton";
-import NavigationBar from "@/components/NavigationBar";
+import FeedItem from "@/components/posts/FeedItem";
 
-export default function Home() {
+export default function FeedPage() {
   return (
-    <div>
-      <main>
-        <NavigationBar />
-        <div>피드</div>
-        <LogoutButton />
-      </main>
-      <footer>푸우우터어어</footer>
+    <div className="relative md:mt-10 mb-10 p-8 gap-8 flex flex-wrap items-center justify-center md:justify-start">
+      <FeedItem />
     </div>
   );
 }

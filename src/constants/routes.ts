@@ -8,5 +8,8 @@ export const AUTH_ROUTES = {
 export const CHAT_ROUTES = {
   CHAT_ROOM: "/chat",
 };
+export const PROFILE_ROUTES = {
+  PROFILE: "/profile",
+};
 
 export const PUBLIC_ROUTES = [AUTH_ROUTES.LOGIN, AUTH_ROUTES.SIGN_UP];

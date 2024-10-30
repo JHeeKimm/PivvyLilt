@@ -2,9 +2,7 @@
 
 import { LoginSchema } from "@/lib/auth/schema";
 import { AuthError } from "firebase/auth";
-// import { redirect } from "next/navigation";
 import { loginAPI } from "@/lib/auth/api";
-// import { BASE_URL } from "@/constants/routes";
 
 export const authenticate = async (_: unknown, formData: FormData) => {
   const validateFields = LoginSchema.safeParse({
@@ -32,7 +30,9 @@ export const authenticate = async (_: unknown, formData: FormData) => {
       user: {
         uid: response.uid,
         email: response.email,
-        displayName: response.nickName || "",
+        bio: response.bio || "",
+        nickname: response.nickname || "",
+        profileImage: response.profileImage || "",
       },
     };
   } catch (err) {
@@ -55,5 +55,4 @@ export const authenticate = async (_: unknown, formData: FormData) => {
         return { errorMessage: "입력 정보를 확인해주세요." };
     }
   }
-  // redirect(BASE_URL);
 };

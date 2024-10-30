@@ -4,14 +4,14 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { IUser, LoginRequest, LoginResponse, SignUpRequest } from "./types";
 import { cookies } from "next/headers";
 
 export const signUpAPI = async ({
   email,
   password,
-  nickName,
+  nickname,
 }: SignUpRequest): Promise<IUser> => {
   const userCredential = await createUserWithEmailAndPassword(
     auth,
@@ -20,16 +20,16 @@ export const signUpAPI = async ({
   );
   const user = userCredential.user;
 
-  await updateProfile(user, { displayName: nickName });
+  await updateProfile(user, { displayName: nickname });
   await setDoc(doc(db, "users", user.uid), {
-    nickName,
+    nickname,
     email,
   });
 
   return {
     uid: user.uid,
     email: user.email!,
-    nickName,
+    nickname,
   };
 };
 
@@ -44,7 +44,6 @@ export const loginAPI = async (
   );
   const user = userCredential.user;
   const token = await user.getIdToken();
-
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
   cookies().set("accessToken", token, {
@@ -55,10 +54,20 @@ export const loginAPI = async (
     // path: "/",
   });
 
-  return {
-    uid: user.uid,
-    email: user.email ?? "",
-    nickName: user.displayName ?? "",
-    accessToken: token,
-  };
+  // Firestore에서 추가 사용자 정보 가져오기
+  const userDocRef = doc(db, "users", user.uid);
+  const userDocSnap = await getDoc(userDocRef);
+  if (userDocSnap.exists()) {
+    const userData = userDocSnap.data();
+    return {
+      uid: user.uid,
+      email: user.email ?? "",
+      bio: userData.bio ?? "",
+      nickname: userData.nickname ?? "",
+      profileImage: userData.profileImage ?? "",
+      accessToken: token,
+    };
+  } else {
+    throw new Error("유저 정보를 가져올 수 없습니다.");
+  }
 };

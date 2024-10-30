@@ -1,14 +1,16 @@
 export interface IUser {
   uid: string;
   email: string;
-  nickName: string;
+  nickname: string;
+  bio?: string;
   profileImage?: string;
 }
 
+// profile_image, bio 추가 필요
 export interface SignUpRequest {
   email: string;
   password: string;
-  nickName: string;
+  nickname: string;
 }
 
 export interface LoginRequest {
@@ -18,7 +20,9 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   uid: string;
+  bio: string;
   email: string;
-  nickName?: string;
+  nickname?: string;
+  profileImage?: string;
   accessToken: string;
 }

@@ -4,37 +4,31 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ErrorMessage } from "../ErrorMessage";
+import { ErrorMessage } from "../common/ErrorMessage";
 import { useFormState } from "react-dom";
 import { createUser } from "@/actions/createUser";
 import { AUTH_ROUTES } from "@/constants/routes";
-import Logo from "../Logo";
+import Logo from "../common/Logo";
 
 export default function SignUpForm() {
   const [state, formAction, isPending] = useFormState(createUser, undefined);
 
-  //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     const { name, value } = e.target;
-  //     // validateField(name, value);
-  //     formAction.validateField({ name, value });
-  //   };
-
   return (
     <div className="flex gap-x-20 justify-center items-center">
       <div className="flex flex-col gap-y-6 items-center">
-        <Logo/>
+        <Logo className="py-4" withBorder={true} />
         <form action={formAction} className="flex flex-col gap-y-6 min-w-80">
           <h2 className="font-bold text-center">회원가입</h2>
           <div className="">
             <Label>Nickname</Label>
             <Input
               type="name"
-              name="nickName"
+              name="nickname"
               placeholder="닉네임을 입력해주세요"
               required
             />
-            {state?.errors?.nickName && (
-              <ErrorMessage message={state?.errors?.nickName[0]} />
+            {state?.errors?.nickname && (
+              <ErrorMessage message={state?.errors?.nickname[0]} />
             )}
           </div>
           <div className="">
