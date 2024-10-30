@@ -1,14 +1,21 @@
 import { db, storage } from "@/lib/config/firebase";
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import {
   ref,
   uploadBytes,
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { postId: string } }
 ) {
   const { postId } = params;
@@ -17,24 +24,26 @@ export async function GET(
     const docSnapshot = await getDoc(docRef);
 
     if (!docSnapshot.exists()) {
-      return Response.json(
+      return NextResponse.json(
         { error: "해당 게시물이 없습니다." },
         { status: 404 }
       );
     }
     const post = {
-      id: docSnapshot.id,
       ...docSnapshot.data(),
+      id: docSnapshot.id,
+      createdAt: docSnapshot.data().createdAt.toDate().toLocaleString(),
     };
-    return Response.json({ post });
+
+    return NextResponse.json({ post });
   } catch (error) {
     console.error("Error fetching post: ", error);
-    return Response.error();
+    return NextResponse.error();
   }
 }
 
 export async function PUT(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { postId: string } }
 ) {
   const { postId } = params;
@@ -50,7 +59,7 @@ export async function PUT(
     const postSnap = await getDoc(postRef);
 
     if (!postSnap.exists()) {
-      return Response.json(
+      return NextResponse.json(
         { error: "해당하는 게시물이 없습니다." },
         { status: 404 }
       );
@@ -86,13 +95,13 @@ export async function PUT(
       title,
       content,
       imageUrl,
-      updatedAt: new Date().toLocaleString(),
+      updatedAt: serverTimestamp(),
     });
 
-    return Response.json({ success: true });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error updating post:", error);
-    return Response.json(
+    return NextResponse.json(
       { error: "게시물 업데이트를 실패했습니다." },
       { status: 500 }
     );
@@ -100,7 +109,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { postId: string } }
 ) {
   const { postId } = params;
@@ -110,7 +119,7 @@ export async function DELETE(
     const postSnap = await getDoc(postRef);
 
     if (!postSnap.exists()) {
-      return Response.json(
+      return NextResponse.json(
         { error: "해당하는 게시물이 없습니다." },
         { status: 404 }
       );
@@ -127,10 +136,10 @@ export async function DELETE(
       const imageRef = ref(storage, imageUrl);
       await deleteObject(imageRef);
     }
-    return Response.json({ success: true });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting post:", error);
-    return Response.json(
+    return NextResponse.json(
       { error: "게시물 삭제에 실패했습니다." },
       { status: 500 }
     );

@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db, storage } from "@/lib/config/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const title = formData.get("title") as string;
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       content,
       imageUrl,
       userId,
-      createdAt: new Date().toLocaleString(),
+      createdAt: serverTimestamp(),
       commentsCount: 0,
       likesCount: 0,
     });

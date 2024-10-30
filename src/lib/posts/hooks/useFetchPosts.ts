@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { POST_KEY } from "../key";
 
-export const usePosts = () => {
+export const useFetchPosts = () => {
   return useQuery({
     queryKey: [POST_KEY],
     queryFn: async () => {

@@ -1,11 +1,9 @@
-import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/toast/useToastStore";
 import { POST_KEY } from "../key";
 // import { TPosts } from "../types";
 
 export const useEditPost = (postId: string) => {
-  const router = useRouter();
   const queryClient = useQueryClient();
   const { addToast } = useToastStore();
 
@@ -14,12 +12,13 @@ export const useEditPost = (postId: string) => {
       const response = await fetch(`/api/posts/${postId}`, {
         method: "PUT",
         body: formData,
+        cache: "no-store",
       });
 
       if (!response.ok) {
         throw new Error("Failed to update post");
       }
-      //   return response.json();
+      return response.json();
     },
     onSuccess: () => {
       // 성공 시 캐시 업데이트
@@ -28,12 +27,8 @@ export const useEditPost = (postId: string) => {
       //     ...(updatedPost as TPosts),
       //   }));
       queryClient.invalidateQueries({ queryKey: [POST_KEY, postId] });
-      console.log(
-        "Updated cache data:",
-        queryClient.getQueryData([POST_KEY, postId])
-      );
+      queryClient.invalidateQueries({ queryKey: [POST_KEY] });
 
-      router.refresh();
       addToast("게시글 등록 성공!", "success");
     },
     onError: (error: Error) => {

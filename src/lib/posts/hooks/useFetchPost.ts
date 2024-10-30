@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { TPosts } from "@/lib/posts/types";
 import { POST_KEY } from "../key";
 
-export const usePost = (postId: string) => {
+export const useFetchPost = (postId: string) => {
   const queryClient = useQueryClient();
 
   return useQuery({
