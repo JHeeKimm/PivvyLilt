@@ -27,10 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="flex flex-col md:flex-row justify-between">
+          <div className="flex flex-col md:flex-row justify-center">
             {!isPublicRoute && (
               <div className="md:h-screen flex flex-col">
-                <Logo />
+                <Logo className="p-4" />
                 <div>
                   <SideBar />
                   <NavigationBar />
