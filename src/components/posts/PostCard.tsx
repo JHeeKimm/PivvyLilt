@@ -18,6 +18,7 @@ import { FeedItemProps } from "@/lib/posts/types";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useParams } from "next/navigation";
 import { useDeltePost } from "@/lib/posts/hooks/useDeletePost";
+import CommentsSection from "../comment/CommentsSection";
 
 export default function PostCard({
   postId,
@@ -117,6 +118,7 @@ export default function PostCard({
           </div>
         )}
       </CardFooter>
+      {isDetailPage && <CommentsSection postId={postId} />}
     </Card>
   );
 }
