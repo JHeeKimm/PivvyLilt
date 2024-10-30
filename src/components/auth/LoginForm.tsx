@@ -7,11 +7,12 @@ import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useFormState } from "react-dom";
 import { authenticate } from "@/actions/authenticate";
-import { BASE_URL, AUTH_ROUTES } from "@/constants/routes";
+import { AUTH_ROUTES } from "@/constants/routes";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Logo from "../common/Logo";
+import Image from "next/image";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -31,16 +32,17 @@ export default function LoginForm() {
         profileImage,
       });
       setIsLogin(true);
-      router.push(BASE_URL);
+      // router.replace(BASE_URL);
+      router.refresh();
     }
   }, [state, setUser, setIsLogin, router]);
 
   return (
     <div className="flex md:flex-row flex-col gap-x-20 justify-center items-center">
       <div className="flex flex-col gap-y-6 items-center">
-        <Logo withBorder={true} />
+        <Logo className="py-4" withBorder={true} />
         <form action={formAction} className="flex flex-col gap-y-6 min-w-80">
-          <h2 className="font-bold text-center">로그인</h2>
+          <h2 className="font-bold text-center text-lg">로그인</h2>
           <div className="">
             <Label>Email</Label>
             <Input
@@ -76,7 +78,15 @@ export default function LoginForm() {
           아직 계정이 없으신가요?
         </Link>
       </div>
-      <div className="basis-56">이미지</div>
+      <div className="hidden md:block w-96">
+        <Image
+          className="rounded"
+          width={360}
+          height={360}
+          alt="pivvylilt-image"
+          src="/pivvylilt-image.webp"
+        />
+      </div>
     </div>
   );
 }

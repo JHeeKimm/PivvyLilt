@@ -16,7 +16,7 @@ export default function SignUpForm() {
   return (
     <div className="flex gap-x-20 justify-center items-center">
       <div className="flex flex-col gap-y-6 items-center">
-        <Logo withBorder={true} />
+        <Logo className="py-4" withBorder={true} />
         <form action={formAction} className="flex flex-col gap-y-6 min-w-80">
           <h2 className="font-bold text-center">회원가입</h2>
           <div className="">
