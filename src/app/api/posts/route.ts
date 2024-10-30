@@ -1,5 +1,6 @@
 import { db } from "@/lib/config/firebase";
 import { collection, getDocs } from "firebase/firestore";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -10,9 +11,9 @@ export async function GET() {
       id: doc.id,
       ...doc.data(),
     }));
-    return Response.json({ posts });
+    return NextResponse.json({ posts });
   } catch (error) {
     console.error("Error fetchin posts: ", error);
-    return Response.error();
+    return NextResponse.error();
   }
 }
