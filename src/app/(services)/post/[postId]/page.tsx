@@ -2,7 +2,7 @@
 
 import PostCard from "@/components/posts/PostCard";
 import { useFetchPost } from "@/lib/posts/hooks/useFetchPost";
-import EditPostForm from "@/components/posts/EditPostForm";
+import EditPost from "@/components/posts/EditPost";
 import { useEditStore } from "@/store/posts/useEditStore";
 
 export default function PostDetailPage({
@@ -19,7 +19,7 @@ export default function PostDetailPage({
   return post ? (
     <div>
       {isEditing ? (
-        <EditPostForm post={post} onCancel={stopEditing} />
+        <EditPost post={post} onCancel={stopEditing} />
       ) : (
         <PostCard postId={post.id} onEdit={startEditing} {...post} />
       )}

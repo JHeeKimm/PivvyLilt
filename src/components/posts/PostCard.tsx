@@ -24,7 +24,6 @@ import UserImage from "../common/UserImage";
 
 export default function PostCard({
   postId,
-  title,
   content,
   imageUrl,
   userId,
@@ -78,7 +77,6 @@ export default function PostCard({
       </CardContent>
 
       {/* Post Text */}
-      <CardContent className="p-4 text-sm">{title}</CardContent>
       <CardContent className="p-4 text-sm">{content}</CardContent>
 
       {/* Action Buttons */}

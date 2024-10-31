@@ -9,13 +9,13 @@ interface UserImageProps {
 export default function UserImage({ profileImage, size }: UserImageProps) {
   const dimensions = size === "sm" ? 40 : 80;
   const borderWidth = size === "sm" ? "border-2" : "border-4";
-  return !profileImage ? (
+  return profileImage ? (
     <Image
-      src={profileImage || ""}
+      src={profileImage}
       alt="User profileImage"
       width={dimensions}
       height={dimensions}
-      className={`rounded-full ${borderWidth}`}
+      className="rounded-full"
     />
   ) : (
     <CircleUserIcon
