@@ -20,10 +20,10 @@ import { useParams } from "next/navigation";
 import { useDeltePost } from "@/lib/posts/hooks/useDeletePost";
 import CommentsSection from "../comment/CommentsSection";
 import { elapsedTime } from "@/utils/elapsedTime";
+import UserImage from "../common/UserImage";
 
 export default function PostCard({
   postId,
-  title,
   content,
   imageUrl,
   userId,
@@ -51,13 +51,7 @@ export default function PostCard({
       <CardHeader className="p-4 flex flex-row items-center justify-between">
         <div className="flex items-center space-x-3">
           {/* User Image */}
-          <Image
-            src="/profile.jpg"
-            alt="User profile"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
+          <UserImage profileImage={user?.profileImage || ""} size="sm" />
           <div>
             <CardTitle className="text-sm font-semibold">{userId}</CardTitle>
             <CardDescription className="text-xs text-gray-500">
@@ -83,7 +77,6 @@ export default function PostCard({
       </CardContent>
 
       {/* Post Text */}
-      <CardContent className="p-4 text-sm">{title}</CardContent>
       <CardContent className="p-4 text-sm">{content}</CardContent>
 
       {/* Action Buttons */}

@@ -5,7 +5,7 @@ import { PUBLIC_ROUTES } from "@/constants/routes";
 import NavigationBar from "@/components/common/NavigationBar";
 import SideBar from "@/components/common/SideBar";
 import Logo from "@/components/common/Logo";
-import Providers from "./provider";
+import QueryProvider from "./queryProvider";
 
 export const metadata: Metadata = {
   title: "PivviLilt",
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
+        <QueryProvider>
           <div className="flex flex-col md:flex-row justify-center">
             {!isPublicRoute && (
               <div className="md:h-screen flex flex-col">
@@ -41,7 +41,7 @@ export default function RootLayout({
             {modal}
             <div id="modal-root"></div>
           </div>
-        </Providers>
+        </QueryProvider>
       </body>
     </html>
   );

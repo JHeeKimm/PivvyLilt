@@ -50,7 +50,6 @@ export async function PUT(
 
   try {
     const formData = await req.formData();
-    const title = formData.get("title") as string;
     const content = formData.get("content") as string;
     const imageFile = formData.get("image") as File | null;
 
@@ -92,7 +91,6 @@ export async function PUT(
 
     // Firestore 데이터 업데이트
     await updateDoc(postRef, {
-      title,
       content,
       imageUrl,
       updatedAt: serverTimestamp(),
