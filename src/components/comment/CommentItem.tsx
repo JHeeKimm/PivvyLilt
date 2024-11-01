@@ -41,7 +41,7 @@ export default function CommentItem({
   };
 
   return (
-    <div className="mb-2 flex justify-between items-center space-x-4">
+    <div className="mb-1 flex justify-between items-center space-x-4">
       {isEditing ? (
         <form
           onSubmit={handleSubmit(onEditSubmit)}
@@ -73,8 +73,12 @@ export default function CommentItem({
         </form>
       ) : (
         <>
-          <p className="px-2 text-gray-800">{comment}</p>
-          <span className="text-gray-400">{elapsedTime(createdAt)}</span>
+          <div>
+            <span className="px-2 mr-2 text-gray-800">{comment}</span>
+            <span className="text-xs text-gray-400">
+              {elapsedTime(createdAt)}
+            </span>
+          </div>
           {isAuthor && (
             <div className="">
               <Button
