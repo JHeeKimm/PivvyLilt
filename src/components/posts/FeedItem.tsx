@@ -6,7 +6,7 @@ import { useFetchPosts } from "@/lib/posts/hooks/useFetchPosts";
 import { TPosts } from "@/lib/posts/types";
 import AddPostButton from "@/components/posts/AddPostButton";
 import { PostCardSkeleton } from "./PostCardSkeleton";
-import { useCallback, useEffect, useRef } from "react";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 
 export default function FeedItem() {
   const {
@@ -18,37 +18,13 @@ export default function FeedItem() {
     error,
   } = useFetchPosts();
 
-  console.log("FeedItem data", data);
-  // 감지할 요소의 ref
-  const triggerRef = useRef(null);
-
-  const observerCallback = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const [entry] = entries;
-      console.log("entry", entry);
-      // 요소가 화면에 관찰되고, 다음 페이지가 있다면 다음 페이지 fetch
-      if (entry.isIntersecting && hasNextPage) {
-        fetchNextPage();
-      }
+  // 관찰 대상 ref
+  const triggerRef = useIntersectionObserver({
+    onIntersect: () => {
+      if (hasNextPage) fetchNextPage();
     },
-    [fetchNextPage, hasNextPage]
-  );
-
-  useEffect(() => {
-    // 관찰자 초기화
-    const observer = new IntersectionObserver(observerCallback, {
-      // 옵저버가 실행되기 위해 관찰 요소가 얼마나 보여야 하는 지에 대한 백분율
-      threshold: 0.2,
-    });
-
-    // 관찰 요소 등록
-    if (triggerRef.current) {
-      observer.observe(triggerRef.current);
-    }
-
-    // 모든 요소 관찰 중지
-    return () => observer.disconnect();
-  }, [observerCallback]);
+    hasNextPage,
+  });
 
   const posts = data?.pages.flatMap((page) => page.posts) || [];
 
@@ -71,9 +47,11 @@ export default function FeedItem() {
         ))
       )}
 
-      {/* 스크롤 시 추가 데이터 로딩 트리거 */}
-      <div ref={triggerRef}>
-        {isFetchingNextPage && <p>Loading more posts...</p>}
+      {/* Intersection Observer의 관찰 대상 요소로 triggerRef를 연결 */}
+      <div ref={triggerRef} className="min-w-80">
+        {isFetchingNextPage && (
+          <p className="text-center">Loading more posts...</p>
+        )}
       </div>
     </>
   );
