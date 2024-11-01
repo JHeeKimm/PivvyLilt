@@ -1,6 +1,5 @@
 export type TPosts = {
   id: string;
-  title: string;
   content: string;
   imageUrl?: string;
   userId: string;
@@ -11,7 +10,6 @@ export type TPosts = {
 
 export interface FeedItemProps {
   postId: string;
-  title: string;
   content: string;
   imageUrl?: string;
   userId: string;
@@ -22,7 +20,6 @@ export interface FeedItemProps {
 }
 
 export interface INewPost {
-  title: string;
   content: string;
   image?: File | string | null;
   userId?: string;

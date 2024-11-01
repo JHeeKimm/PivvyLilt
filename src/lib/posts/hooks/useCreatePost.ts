@@ -10,7 +10,7 @@ export const useCreatePost = () => {
 
   return useMutation<unknown, Error, FormData>({
     mutationFn: async (formData: FormData) => {
-      const response = await fetch("/api/posts/newpost", {
+      const response = await fetch("/api/posts/create-post", {
         method: "POST",
         body: formData,
       });

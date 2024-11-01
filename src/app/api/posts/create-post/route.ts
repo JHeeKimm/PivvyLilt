@@ -6,14 +6,13 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
-    const title = formData.get("title") as string;
     const content = formData.get("content") as string;
     const userId = formData.get("userId") as string;
     const imageFile = formData.get("image") as File;
 
-    if (!title || !content) {
+    if (!content) {
       return NextResponse.json(
-        { error: "제목과 내용은 필수입니다." },
+        { error: "내용은 필수입니다." },
         { status: 400 }
       );
     }
@@ -24,7 +23,6 @@ export async function POST(req: NextRequest) {
       imageUrl = await getDownloadURL(storageRef);
     }
     await addDoc(collection(db, "posts"), {
-      title,
       content,
       imageUrl,
       userId,
