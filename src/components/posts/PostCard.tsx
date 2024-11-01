@@ -32,7 +32,6 @@ export default function PostCard({
   // commentsCount,
   onEdit,
 }: FeedItemProps) {
-  const defaultImageUrl = "/profile.jpg";
   const params = useParams();
   const { user } = useAuthStore();
 
@@ -68,7 +67,7 @@ export default function PostCard({
       {/* Post Image */}
       <CardContent className="p-0 bg-gray-200 relative min-h-48 max-h-80">
         <Image
-          src={imageUrl ? imageUrl : defaultImageUrl}
+          src={imageUrl ? imageUrl : ""}
           alt="User profile"
           layout="fill"
           objectFit="cover"
