@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     const posts = postsSnapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
-      createdAt: doc.data().createdAt.toDate().toLocaleString(),
+      createdAt: doc.data().createdAt.toDate().toISOString(),
     }));
 
     // 페이징
