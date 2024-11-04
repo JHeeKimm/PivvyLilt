@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { AuthStore } from "./types";
 import { IUser } from "@/lib/auth/types";
-import { auth, db } from "@/lib/config/firebase";
+import { auth, db } from "@/config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 

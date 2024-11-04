@@ -1,4 +1,4 @@
-import { db } from "@/lib/config/firebase";
+import { db } from "@/config/firebase";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     const posts = postsSnapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
-      createdAt: doc.data().createdAt.toDate().toLocaleString(),
+      createdAt: doc.data().createdAt.toDate().toISOString(),
     }));
 
     // 페이징
