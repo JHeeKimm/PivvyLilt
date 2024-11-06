@@ -1,13 +1,10 @@
 import FeedItem from "@/components/posts/FeedItem";
+import getQueryClient from "@/config/tanstack-query/get-query-client";
 import { POST_KEY } from "@/lib/posts/key";
-import {
-  QueryClient,
-  dehydrate,
-  HydrationBoundary,
-} from "@tanstack/react-query";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function FeedPage() {
-  const queryClient = new QueryClient();
+  const queryClient = getQueryClient();
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: [POST_KEY],
