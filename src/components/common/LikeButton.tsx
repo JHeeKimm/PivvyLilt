@@ -1,5 +1,3 @@
-// import { LIKE_KEY } from "@/lib/likes/key";
-// import { useAuthStore } from "@/store/auth/useAuthStore";
 import IconButton from "./IconButton";
 import { HeartIcon, HeartFilledIcon } from "@radix-ui/react-icons";
 

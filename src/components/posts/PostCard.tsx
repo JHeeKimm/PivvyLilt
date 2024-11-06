@@ -7,9 +7,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { DotsHorizontalIcon, Share1Icon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import { CommentIcon } from "../common/icons/CommentIcon";
 import { FeedItemProps } from "@/lib/posts/types";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useParams } from "next/navigation";
@@ -20,6 +18,8 @@ import UserImage from "../common/UserImage";
 import { useLikeMutation } from "@/lib/likes/hooks/useLikeMutation";
 import LikeButton from "../common/LikeButton";
 import Link from "next/link";
+import CommentButton from "../common/CommentButton";
+import DotMenuButton from "../common/DotMenuButton";
 
 export default function PostCard({
   postId,
@@ -28,7 +28,7 @@ export default function PostCard({
   userId,
   createdAt,
   likesCount,
-  // commentsCount,
+  commentsCount,
   isLikedByUser,
   onEdit,
 }: FeedItemProps) {
@@ -46,8 +46,11 @@ export default function PostCard({
   };
   const { mutateAsync: toggleLike } = useLikeMutation(postId, isLikedByUser);
   const handleLike = async () => {
-    console.log("handleLike isLikedByUser", isLikedByUser);
     await toggleLike();
+  };
+
+  const handleDotMenu = () => {
+    console.log("onClick handleDotMenu");
   };
 
   return (
@@ -65,9 +68,7 @@ export default function PostCard({
           </div>
         </div>
         {/* 더보기 button */}
-        <Button variant="ghost" size="icon">
-          <DotsHorizontalIcon className="h-6 w-6 text-gray-500" />
-        </Button>
+        <DotMenuButton onClick={handleDotMenu} />
       </CardHeader>
       <Link href={`/post/${postId}`}>
         {/* Post Image */}
@@ -93,12 +94,7 @@ export default function PostCard({
             isLiked={isLikedByUser}
             onClick={handleLike}
           />
-          <Button variant="ghost" size="icon" className="text-gray-500">
-            <CommentIcon />
-          </Button>
-          <Button variant="ghost" size="icon" className="text-gray-500">
-            <Share1Icon className="h-5 w-5" />
-          </Button>
+          <CommentButton count={commentsCount} />
         </div>
         {isDetailPage && isAuthor && (
           <div>
