@@ -1,7 +1,4 @@
-"use client";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { QueryClient } from "@tanstack/react-query";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -15,7 +12,7 @@ function makeQueryClient() {
 
 let browserQueryClient: QueryClient | undefined = undefined;
 
-function getQueryClient() {
+export default function getQueryClient() {
   if (typeof window === "undefined") {
     // Server: 항상 새로운 queryClient 생성
     return makeQueryClient();
@@ -26,20 +23,4 @@ function getQueryClient() {
     }
     return browserQueryClient;
   }
-}
-// const queryClient = new QueryClient();
-
-export default function QueryProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const queryClient = getQueryClient();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  );
 }

@@ -1,11 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/toast/useToastStore";
 import { POST_KEY } from "../key";
-// import { TPosts } from "../types";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 
 export const useEditPost = (postId: string) => {
   const queryClient = useQueryClient();
   const { addToast } = useToastStore();
+  const { user } = useAuthStore();
+  const userId = user?.uid;
 
   return useMutation<unknown, Error, FormData>({
     mutationFn: async (formData: FormData) => {
@@ -21,12 +23,7 @@ export const useEditPost = (postId: string) => {
       return response.json();
     },
     onSuccess: () => {
-      // 성공 시 캐시 업데이트
-      //   queryClient.setQueryData<TPosts>([POST_KEY, postId], (oldData) => ({
-      //     ...(oldData as TPosts),
-      //     ...(updatedPost as TPosts),
-      //   }));
-      queryClient.invalidateQueries({ queryKey: [POST_KEY, postId] });
+      queryClient.invalidateQueries({ queryKey: [POST_KEY, postId, userId] });
       queryClient.invalidateQueries({ queryKey: [POST_KEY] });
 
       addToast("게시글 등록 성공!", "success");

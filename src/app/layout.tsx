@@ -5,7 +5,7 @@ import { PUBLIC_ROUTES } from "@/constants/routes";
 import NavigationBar from "@/components/common/NavigationBar";
 import SideBar from "@/components/common/SideBar";
 import Logo from "@/components/common/Logo";
-import QueryProvider from "./queryProvider";
+import QueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "PivviLilt",

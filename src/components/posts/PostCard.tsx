@@ -7,11 +7,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  DotsHorizontalIcon,
-  HeartIcon,
-  Share1Icon,
-} from "@radix-ui/react-icons";
+import { DotsHorizontalIcon, Share1Icon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { CommentIcon } from "../common/icons/CommentIcon";
 import { FeedItemProps } from "@/lib/posts/types";
@@ -21,6 +17,9 @@ import { useDeltePost } from "@/lib/posts/hooks/useDeletePost";
 import CommentsSection from "../comment/CommentsSection";
 import { elapsedTime } from "@/utils/elapsedTime";
 import UserImage from "../common/UserImage";
+import { useLikeMutation } from "@/lib/likes/hooks/useLikeMutation";
+import LikeButton from "../common/LikeButton";
+import Link from "next/link";
 
 export default function PostCard({
   postId,
@@ -28,8 +27,9 @@ export default function PostCard({
   imageUrl,
   userId,
   createdAt,
-  // likesCount,
+  likesCount,
   // commentsCount,
+  isLikedByUser,
   onEdit,
 }: FeedItemProps) {
   const params = useParams();
@@ -44,6 +44,12 @@ export default function PostCard({
       await deletePost();
     }
   };
+  const { mutateAsync: toggleLike } = useLikeMutation(postId, isLikedByUser);
+  const handleLike = async () => {
+    console.log("handleLike isLikedByUser", isLikedByUser);
+    await toggleLike();
+  };
+
   return (
     <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
       {/* Header: User Info and 더보기 Button */}
@@ -63,27 +69,30 @@ export default function PostCard({
           <DotsHorizontalIcon className="h-6 w-6 text-gray-500" />
         </Button>
       </CardHeader>
+      <Link href={`/post/${postId}`}>
+        {/* Post Image */}
+        <CardContent className="p-0 bg-gray-200 relative min-h-48 max-h-80">
+          <Image
+            src={imageUrl ? imageUrl : ""}
+            alt="User profile"
+            fill={true}
+            style={{ objectFit: "cover" }}
+            className=""
+          />
+        </CardContent>
 
-      {/* Post Image */}
-      <CardContent className="p-0 bg-gray-200 relative min-h-48 max-h-80">
-        <Image
-          src={imageUrl ? imageUrl : ""}
-          alt="User profile"
-          layout="fill"
-          objectFit="cover"
-          className=""
-        />
-      </CardContent>
-
-      {/* Post Text */}
-      <CardContent className="p-4 text-sm">{content}</CardContent>
+        {/* Post Text */}
+        <CardContent className="p-4 text-sm">{content}</CardContent>
+      </Link>
 
       {/* Action Buttons */}
       <CardFooter className="p-2 flex justify-between items-center">
         <div className="flex">
-          <Button variant="ghost" size="icon" className="text-red-500">
-            <HeartIcon className="h-5 w-5" />
-          </Button>
+          <LikeButton
+            count={likesCount}
+            isLiked={isLikedByUser}
+            onClick={handleLike}
+          />
           <Button variant="ghost" size="icon" className="text-gray-500">
             <CommentIcon />
           </Button>
