@@ -6,6 +6,7 @@ export type TPosts = {
   createdAt: string;
   commentsCount: number;
   likesCount: number;
+  isLikedByUser: boolean;
 };
 
 export interface FeedItemProps {
@@ -16,6 +17,7 @@ export interface FeedItemProps {
   createdAt: string;
   commentsCount: number;
   likesCount: number;
+  isLikedByUser: boolean;
   onEdit?: () => void;
 }
 

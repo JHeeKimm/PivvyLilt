@@ -19,6 +19,8 @@ export async function GET(
   { params }: { params: { postId: string } }
 ) {
   const { postId } = params;
+  const userId = req.headers.get("user-id");
+
   try {
     const docRef = doc(db, "posts", postId);
     const docSnapshot = await getDoc(docRef);
@@ -34,8 +36,15 @@ export async function GET(
       id: docSnapshot.id,
       createdAt: docSnapshot.data().createdAt.toDate().toLocaleString(),
     };
+    // 좋아요 여부 확인 (userId가 존재할 때만)
+    let isLikedByUser = false;
+    if (userId) {
+      const likeDocRef = doc(db, "likes", `${postId}_${userId}`);
+      const likeDocSnap = await getDoc(likeDocRef);
+      isLikedByUser = likeDocSnap.exists(); // 좋아요 상태 설정
+    }
 
-    return NextResponse.json({ post });
+    return NextResponse.json({ post: { ...post, isLikedByUser } });
   } catch (error) {
     console.error("Error fetching post: ", error);
     return NextResponse.error();
