@@ -1,10 +1,15 @@
+"use client";
+
 import { BASE_URL, CHAT_ROUTES, PROFILE_ROUTES } from "@/constants/routes";
-// import { useAuthStore } from "@/store/auth/useAuthStore";
+import { useAuthStore } from "@/store/auth/useAuthStore";
 import { HomeIcon, PersonIcon } from "@radix-ui/react-icons";
 import { ChatIcon } from "./icons/ChatIcon";
 import NavLink from "./NavLink";
 
 export default function NavigationBar() {
+  const { user } = useAuthStore();
+  const userId = user?.uid;
+
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-opacity-80 bg-gray-800 text-white flex justify-around py-3 backdrop-blur-sm shadow-lg z-10">
       <div className="flex flex-col items-center">
@@ -15,7 +20,7 @@ export default function NavigationBar() {
       </div>
       <div className="flex flex-col items-center">
         <NavLink
-          href={PROFILE_ROUTES.PROFILE}
+          href={`${PROFILE_ROUTES.PROFILE}/${userId}`}
           icon={<PersonIcon />}
           text="Profile"
         />

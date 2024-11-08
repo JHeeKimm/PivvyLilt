@@ -14,7 +14,6 @@ export async function POST(
 ) {
   const { userId } = await req.json();
   const { postId } = params;
-  console.log("like post userId===", userId, "postId====", postId);
   try {
     const likeRef = doc(db, "likes", `${postId}_${userId}`);
     const postRef = doc(db, "posts", postId);
@@ -24,9 +23,7 @@ export async function POST(
       // 좋아요 문서가 이미 존재하는지 확인
       const likeDoc = await transaction.get(likeRef);
       // 좋아요 문서가 없으면
-      console.log("likeDoc.exists()", likeDoc.exists());
       if (!likeDoc.exists()) {
-        console.log("추가 로직");
         // 좋아요 추가
         transaction.set(likeRef, {
           postId,
