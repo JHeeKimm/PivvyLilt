@@ -11,10 +11,7 @@ export default async function FeedPage() {
     queryFn: async () => {
       console.log("Fetching data from server");
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?page=1`,
-        {
-          cache: "no-store",
-        }
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?page=1`
       );
       if (!res.ok) throw new Error("Failed to fetch initial posts");
       return await res.json();

@@ -38,6 +38,9 @@ export default function PostCard({
   const isDetailPage = params?.postId === postId;
   const isAuthor = user?.uid === userId;
 
+  const followerId = user?.uid as string;
+  const followingId = userId;
+
   const { mutateAsync: deletePost } = useDeltePost(postId);
   const handleDelete = async () => {
     if (confirm("정말로 삭제하시겠습니까?")) {
@@ -47,10 +50,6 @@ export default function PostCard({
   const { mutateAsync: toggleLike } = useLikeMutation(postId, isLikedByUser);
   const handleLike = async () => {
     await toggleLike();
-  };
-
-  const handleDotMenu = () => {
-    console.log("onClick handleDotMenu");
   };
 
   return (
@@ -68,7 +67,7 @@ export default function PostCard({
           </div>
         </div>
         {/* 더보기 button */}
-        <DotMenuButton onClick={handleDotMenu} />
+        <DotMenuButton followerId={followerId} followingId={followingId} />
       </CardHeader>
       <Link href={`/post/${postId}`}>
         {/* Post Image */}

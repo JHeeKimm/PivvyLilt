@@ -23,7 +23,7 @@ export function useLikeMutation(postId: string, isLiked: boolean) {
         ? `/api/likes/${postId}/unlike`
         : `/api/likes/${postId}/like`;
       const method = isLiked ? "DELETE" : "POST";
-      console.log("mutation isLiked", isLiked);
+
       const response = await fetch(endpoint, {
         method,
         headers: {
