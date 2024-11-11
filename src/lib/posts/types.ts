@@ -31,3 +31,12 @@ export interface EditPostFormProps {
   post: TPosts;
   onCancel: () => void;
 }
+
+export interface FetchPostsResponse {
+  posts: TPosts[];
+  nextPage?: number;
+}
+
+export interface FetchPostResponse {
+  post: TPosts;
+}

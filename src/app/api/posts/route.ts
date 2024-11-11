@@ -1,4 +1,5 @@
 import { db } from "@/config/firebase/firebase";
+import { authenticateUser } from "@/lib/auth/authenticateUser";
 import {
   collection,
   doc,
@@ -15,7 +16,10 @@ export async function GET(req: NextRequest) {
   const page = Number(searchParams.get("page")) || 1;
   const pageSize = Number(searchParams.get("pageSize")) || 4;
 
-  const userId = req.headers.get("user-id");
+  const userId = await authenticateUser(req);
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
   try {
     const postsRef = collection(db, "posts");
