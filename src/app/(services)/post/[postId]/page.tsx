@@ -13,6 +13,9 @@ export default function PostDetailPage({
   const { data: post, isLoading, error } = useFetchPost(postId);
   const { isEditing, startEditing, stopEditing } = useEditStore();
 
+  console.log("PostDetailPage  post", post);
+  console.log("PostDetailPage  post.id", post?.id);
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>오류가 발생했습니다. {error.message}</p>;
 

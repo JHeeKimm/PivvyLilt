@@ -6,7 +6,6 @@ import { TPosts } from "@/lib/posts/types";
 import AddPostButton from "@/components/posts/AddPostButton";
 import { PostCardSkeleton } from "./PostCardSkeleton";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-// import { useUserLikes } from "@/lib/likes/hooks/useUserLikes";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 
 export default function FeedItem() {
@@ -30,7 +29,6 @@ export default function FeedItem() {
   });
 
   const posts = data?.pages.flatMap((page) => page.posts) || [];
-  // const { data: likedPostIds } = useUserLikes(user?.uid as string);
 
   if (error) return <p>오류가 발생했습니다. {error.message}</p>;
 

@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { POST_KEY } from "../key";
 import { useAuthStore } from "@/store/auth/useAuthStore";
+import { customFetchServer } from "@/lib/fetch/server";
+import { FetchPostResponse } from "../types";
 
 export const useFetchPost = (postId: string) => {
   const { user } = useAuthStore();
@@ -9,19 +11,12 @@ export const useFetchPost = (postId: string) => {
   return useQuery({
     queryKey: [POST_KEY, postId, userId],
     queryFn: async () => {
-      const res = await fetch(`/api/posts/${postId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          "user-id": userId,
-        },
-        cache: "no-store",
+      const response = await customFetchServer<FetchPostResponse>({
+        endpoint: `/api/posts/${postId}`,
       });
+      console.log("useFetchPost response => ", response);
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-      const result = await res.json();
-      return result.post;
+      return response.post;
     },
     enabled: !!postId,
   });

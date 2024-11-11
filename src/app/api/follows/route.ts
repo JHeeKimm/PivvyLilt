@@ -1,4 +1,5 @@
 import { db } from "@/config/firebase/firebase";
+import { authenticateUser } from "@/lib/auth/authenticateUser";
 import { FOLLOWER_KEY, FOLLOWING_KEY } from "@/lib/follows/key";
 import {
   collection,
@@ -82,8 +83,12 @@ interface FollowData {
 
 // 팔로워/팔로잉 목록 조회
 export async function GET(req: NextRequest) {
-  const userId = req.headers.get("user-id");
   const type = req.nextUrl.searchParams.get("type");
+
+  const userId = await authenticateUser(req);
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
   try {
     let followsQuery;

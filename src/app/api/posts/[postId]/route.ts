@@ -1,4 +1,5 @@
 import { db, storage } from "@/config/firebase/firebase";
+import { authenticateUser } from "@/lib/auth/authenticateUser";
 import {
   deleteDoc,
   doc,
@@ -19,7 +20,10 @@ export async function GET(
   { params }: { params: { postId: string } }
 ) {
   const { postId } = params;
-  const userId = req.headers.get("user-id");
+  const userId = await authenticateUser(req);
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
   try {
     const docRef = doc(db, "posts", postId);
