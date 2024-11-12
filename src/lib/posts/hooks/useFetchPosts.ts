@@ -3,9 +3,9 @@ import { POST_KEY } from "../key";
 import { customFetchServer } from "@/lib/fetch/server";
 import { FetchPostsResponse } from "../types";
 
-export const useFetchPosts = (userId: string) => {
+export const useFetchPosts = () => {
   return useInfiniteQuery<FetchPostsResponse>({
-    queryKey: [POST_KEY, userId],
+    queryKey: [POST_KEY],
     queryFn: async ({ pageParam = 1 }) => {
       // 무한 스크롤: 클라이언트에서 쿼리 파라미터 전달
       const response = await customFetchServer<FetchPostsResponse>({

@@ -1,6 +1,8 @@
 import FeedItem from "@/components/posts/FeedItem";
 import getQueryClient from "@/config/tanstack-query/get-query-client";
+import { customFetchServer } from "@/lib/fetch/server";
 import { POST_KEY } from "@/lib/posts/key";
+import { FetchPostsResponse } from "@/lib/posts/types";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function FeedPage() {
@@ -9,12 +11,13 @@ export default async function FeedPage() {
   await queryClient.prefetchInfiniteQuery({
     queryKey: [POST_KEY],
     queryFn: async () => {
-      console.log("Fetching data from server");
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?page=1`
-      );
-      if (!res.ok) throw new Error("Failed to fetch initial posts");
-      return await res.json();
+      const response = await customFetchServer<FetchPostsResponse>({
+        endpoint: `/api/posts?page=1`,
+      });
+      if (!response) {
+        return { posts: [], nextPage: undefined };
+      }
+      return response;
     },
     initialPageParam: 1,
   });

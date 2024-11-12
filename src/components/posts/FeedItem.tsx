@@ -6,11 +6,8 @@ import { TPosts } from "@/lib/posts/types";
 import AddPostButton from "@/components/posts/AddPostButton";
 import { PostCardSkeleton } from "./PostCardSkeleton";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import { useAuthStore } from "@/store/auth/useAuthStore";
 
 export default function FeedItem() {
-  const { user } = useAuthStore();
-
   const {
     data,
     fetchNextPage,
@@ -18,7 +15,7 @@ export default function FeedItem() {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useFetchPosts(user?.uid as string);
+  } = useFetchPosts();
 
   // 관찰 대상 ref
   const triggerRef = useIntersectionObserver({
