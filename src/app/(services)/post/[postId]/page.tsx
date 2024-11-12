@@ -1,33 +1,28 @@
-"use client";
+"use server";
 
-import PostCard from "@/components/posts/PostCard";
-import { useFetchPost } from "@/lib/posts/hooks/useFetchPost";
-import EditPost from "@/components/posts/EditPost";
-import { useEditStore } from "@/store/posts/useEditStore";
+import PostDetailItem from "@/components/posts/PostDetailItem";
+import getQueryClient from "@/config/tanstack-query/get-query-client";
+import { queryOptions } from "@/lib/posts/key";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
-export default function PostDetailPage({
+export default async function PostDetailPage({
   params: { postId },
 }: {
   params: { postId: string };
 }) {
-  const { data: post, isLoading, error } = useFetchPost(postId);
-  const { isEditing, startEditing, stopEditing } = useEditStore();
+  const { queryKey: fetchPostKey, queryFn: fetchPostFn } =
+    queryOptions.post(postId);
 
-  console.log("PostDetailPage  post", post);
-  console.log("PostDetailPage  post.id", post?.id);
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: fetchPostKey,
+    queryFn: fetchPostFn,
+  });
+  const dehydratedState = dehydrate(queryClient);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>오류가 발생했습니다. {error.message}</p>;
-
-  return post ? (
-    <div>
-      {isEditing ? (
-        <EditPost post={post} onCancel={stopEditing} />
-      ) : (
-        <PostCard postId={post.id} onEdit={startEditing} {...post} />
-      )}
-    </div>
-  ) : (
-    <p>게시물을 찾을 수 없습니다.</p>
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <PostDetailItem postId={postId} />
+    </HydrationBoundary>
   );
 }

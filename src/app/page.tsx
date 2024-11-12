@@ -17,7 +17,6 @@ export default async function FeedPage() {
       if (!response) {
         return { posts: [], nextPage: undefined };
       }
-      console.log("FeedPage prefetchInfiniteQuery response =>", response);
       return response;
     },
     initialPageParam: 1,
