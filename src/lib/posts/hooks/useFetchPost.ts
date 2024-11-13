@@ -1,23 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { POST_KEY } from "../key";
-import { useAuthStore } from "@/store/auth/useAuthStore";
-import { customFetchServer } from "@/lib/fetch/server";
-import { FetchPostResponse } from "../types";
+import { queryOptions } from "../key";
 
 export const useFetchPost = (postId: string) => {
-  const { user } = useAuthStore();
-  const userId = user?.uid as string;
-
+  const { queryKey: fetchPostKey, queryFn: fetchPostFn } =
+    queryOptions.post(postId);
   return useQuery({
-    queryKey: [POST_KEY, postId, userId],
-    queryFn: async () => {
-      const response = await customFetchServer<FetchPostResponse>({
-        endpoint: `/api/posts/${postId}`,
-      });
-      console.log("useFetchPost response => ", response);
-
-      return response.post;
-    },
+    queryKey: fetchPostKey,
+    queryFn: fetchPostFn,
     enabled: !!postId,
   });
 };
