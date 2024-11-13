@@ -3,13 +3,11 @@
 import Cookies from "js-cookie";
 import { FetchOptions } from "./types";
 
-export const customFetchClient = async <T>({
+export const customClientRequest = async <T>({
   method = "GET",
   endpoint,
   body = null,
 }: FetchOptions): Promise<T> => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
   const accessToken = Cookies.get("accessToken");
 
   const headers: HeadersInit = {
@@ -17,7 +15,7 @@ export const customFetchClient = async <T>({
     ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
   };
 
-  const response = await fetch(`${baseUrl}${endpoint}`, {
+  const response = await fetch(endpoint, {
     method,
     ...(body && { body }),
     headers,
@@ -31,7 +29,7 @@ export const customFetchClient = async <T>({
   }
 
   const data = await response.json();
-  console.log("customFetchClient Client data", data);
+  console.log("customClientRequest Client data", data);
 
   return data;
 };

@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { FetchOptions } from "./types";
 
-export const customFetchServer = async <T>({
+export const customServerRequest = async <T>({
   method = "GET",
   endpoint,
   body = null,
