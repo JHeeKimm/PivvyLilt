@@ -11,7 +11,7 @@ import Image from "next/image";
 import { FeedItemProps } from "@/lib/posts/types";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useParams } from "next/navigation";
-import { useDeltePost } from "@/lib/posts/hooks/useDeletePost";
+import { useDeletePost } from "@/lib/posts/hooks/useDeletePost";
 import CommentsSection from "../comment/CommentsSection";
 import { elapsedTime } from "@/utils/elapsedTime";
 import UserImage from "../common/UserImage";
@@ -41,7 +41,7 @@ export default function PostCard({
   const followerId = user?.uid as string;
   const followingId = userId;
 
-  const { mutateAsync: deletePost } = useDeltePost(postId);
+  const { mutateAsync: deletePost } = useDeletePost(postId);
   const handleDelete = async () => {
     if (confirm("정말로 삭제하시겠습니까?")) {
       await deletePost();

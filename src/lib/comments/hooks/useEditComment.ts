@@ -1,33 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { COMMENT_KEY } from "../keys";
+import { queryKeys } from "../key";
 import { useToastStore } from "@/store/toast/useToastStore";
+import { updateComment } from "../api";
 
 export const useEditComment = (postId: string, commentId: string) => {
   const queryClient = useQueryClient();
   const { addToast } = useToastStore();
 
   return useMutation({
-    mutationFn: async ({ comment }: { comment: string }) => {
-      const response = await fetch(
-        `/api/posts/${postId}/comments/${commentId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ comment }),
-          cache: "no-store",
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Failed to update comment");
-      }
-
-      return response.json();
-    },
+    mutationFn: ({ comment }: { comment: string }) =>
+      updateComment(postId, commentId, comment),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [COMMENT_KEY, postId],
+        queryKey: queryKeys.comments(postId),
       });
     },
     onError: (error: Error) => {
