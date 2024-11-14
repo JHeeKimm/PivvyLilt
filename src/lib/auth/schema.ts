@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const easyPatterns = ["123456", "password", "qwerty", "asdf", "admin"];
+const easyPatterns = ["123456", "password"];
 
 export const SignUpSchema = z.object({
   nickname: z
@@ -26,20 +26,20 @@ export const SignUpSchema = z.object({
       (password) => !easyPatterns.some((pattern) => password.includes(pattern)),
       {
         message:
-          "비밀번호에 쉬운 패턴(예: '123456', 'qwerty')이 포함되어 있습니다.",
-      }
-    )
-    .refine(
-      (password) => !/\d{3,}/.test(password), // 세 자리 이상의 연속된 숫자 방지
-      { message: "비밀번호에 연속된 숫자나 전화번호가 포함되어 있습니다." }
-    )
-    .refine(
-      (password) => !/([a-zA-Z])\1{2,}/.test(password), // 동일한 문자가 3번 이상 연속되는 패턴 방지
-      {
-        message:
-          "비밀번호에 동일한 문자가 연속해서 3번 이상 포함되어 있습니다.",
+          "비밀번호에 쉬운 패턴(예: '123456', 'password')이 포함되어 있습니다.",
       }
     ),
+  // .refine(
+  //   (password) => !/\d{3,}/.test(password), // 세 자리 이상의 연속된 숫자 방지
+  //   { message: "비밀번호에 연속된 숫자나 전화번호가 포함되어 있습니다." }
+  // )
+  // .refine(
+  //   (password) => !/([a-zA-Z])\1{2,}/.test(password), // 동일한 문자가 3번 이상 연속되는 패턴 방지
+  //   {
+  //     message:
+  //       "비밀번호에 동일한 문자가 연속해서 3번 이상 포함되어 있습니다.",
+  //   }
+  // ),
 });
 
 export const LoginSchema = z.object({
