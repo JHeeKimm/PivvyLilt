@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <QueryProvider>
-          <div className="flex flex-col md:flex-row justify-center">
+          <div className="w-full flex flex-col md:flex-row justify-center">
             {!isPublicRoute && (
               <div className="md:h-screen flex flex-col">
                 <Logo className="p-4" />
@@ -37,7 +37,9 @@ export default function RootLayout({
                 </div>
               </div>
             )}
-            <main className="flex justify-center items-center">{children}</main>
+            <main className="w-full flex justify-center items-center">
+              {children}
+            </main>
             {modal}
             <div id="modal-root"></div>
           </div>

@@ -8,7 +8,6 @@ import NavLink from "./NavLink";
 
 export default function NavigationBar() {
   const { user } = useAuthStore();
-  const userId = user?.uid;
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-opacity-80 bg-gray-800 text-white flex justify-around py-3 backdrop-blur-sm shadow-lg z-10">
@@ -20,9 +19,9 @@ export default function NavigationBar() {
       </div>
       <div className="flex flex-col items-center">
         <NavLink
-          href={`${PROFILE_ROUTES.PROFILE}/${userId}`}
+          href={`${PROFILE_ROUTES.PROFILE}/${user?.nickname}`}
           icon={<PersonIcon />}
-          text="Profile"
+          text="MyProfile"
         />
       </div>
     </nav>
