@@ -30,9 +30,9 @@ export default function SideBar() {
         </div>
         <div>
           <NavLink
-            href={PROFILE_ROUTES.PROFILE}
+            href={`${PROFILE_ROUTES.PROFILE}/${user?.nickname}`}
             icon={<PersonIcon />}
-            text="Profile"
+            text="MyProfile"
           />
         </div>
         <div className="pt-11">
