@@ -1,4 +1,4 @@
-// import UserPostsSection from "@/components/profile/UserPostsSection";
+import UserPostsSection from "@/components/profile/UserPostsSection";
 import UserProfileSection from "@/components/profile/UserProfileSection";
 
 export default function ProfilePage({
@@ -10,7 +10,7 @@ export default function ProfilePage({
   return (
     <div>
       <UserProfileSection nickname={decodedNickname} />
-      {/* <UserPostsSection nickname={nickname} /> */}
+      <UserPostsSection />
     </div>
   );
 }
