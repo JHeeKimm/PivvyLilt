@@ -20,14 +20,14 @@ export default function DotMenuButton({
     setIsMenuOpen(false);
   });
 
-  const { data: isFollowing, isLoading } = useIsFollowingQuery(
+  const { data: isFollowingState, isLoading } = useIsFollowingQuery(
     followerId,
     followingId
   );
   const { mutateAsync: followMutation } = useFollowMutation(
     followerId,
     followingId,
-    isFollowing
+    isFollowingState as boolean
   );
 
   const toggleMenu = () => {
@@ -54,7 +54,7 @@ export default function DotMenuButton({
             onClick={handleFollow}
             disabled={isLoading}
           >
-            {isFollowing ? "UnFollow" : "Follow"}
+            {isFollowingState ? "UnFollow" : "Follow"}
           </Button>
           <Button className="w-full" variant="ghost">
             Chat

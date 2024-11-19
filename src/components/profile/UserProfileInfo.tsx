@@ -7,14 +7,18 @@ import IconButton from "../common/IconButton";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { PROFILE_ROUTES } from "@/constants/routes";
+import { useFetchFollowerCounts } from "@/lib/follows/hooks/useFetchFollowerCount";
 
 export default function UserProfileInfo({ nickname }: { nickname: string }) {
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
   const isMyProfile = user?.nickname === nickname;
   const { data: otherUserData, isLoading } = useFetchProfile(nickname);
   const userData = isMyProfile ? user : otherUserData;
-  console.log("user", user);
+
+  const { data, error } = useFetchFollowerCounts(user?.uid as string);
+
   if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>오류가 발생했습니다. {error.message}</p>;
 
   return (
     <div className="gap-y-6 flex flex-col items-center p-6 bg-gray-800 text-white">
@@ -35,6 +39,10 @@ export default function UserProfileInfo({ nickname }: { nickname: string }) {
         )}
       </div>
       <div>{userData?.nickname}</div>
+      <div className="flex justify-center space-x-4 text-sm">
+        <span>팔로워: {data?.followersCount}</span>
+        <span>팔로잉: {data?.followingsCount}</span>
+      </div>
       <div>{userData?.bio}</div>
     </div>
   );
