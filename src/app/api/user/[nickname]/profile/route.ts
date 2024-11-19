@@ -75,7 +75,7 @@ export async function PUT(
   try {
     const formData = await req.formData();
     const bio = formData.get("bio") as string;
-    const imageFile = formData.get("profileImage") as File | null;
+    const imageFile = formData.get("profileImage") as File | null | "";
 
     // nickname을 필드로 Firestore에서 사용자 문서 조회
     const usersRef = collection(db, "users");
@@ -94,14 +94,19 @@ export async function PUT(
     const existingData = querySnapshot.docs[0].data();
     let imageUrl = existingData.profileImage || "";
 
-    // 새로운 이미지 파일이 있는 경우 처리
+    // 새 이미지 파일이 있는 경우
     if (imageFile instanceof File) {
       // 기존 이미지가 있는 경우 삭제
       if (imageUrl) {
         const oldImageRef = ref(storage, imageUrl);
-        await deleteObject(oldImageRef).catch((error) => {
-          console.error("기존 이미지 삭제 오류:", error);
-        });
+        await deleteObject(oldImageRef)
+          .then(() => {
+            // File deleted successfully
+            console.log("기존 이미지 삭제 성공");
+          })
+          .catch((error) => {
+            console.error("Error deleting old image:", error);
+          });
       }
 
       // 새 이미지 파일을 Firebase Storage에 업로드
@@ -113,12 +118,11 @@ export async function PUT(
 
       // 업로드된 새 이미지의 URL 가져오기
       imageUrl = await getDownloadURL(newImageRef);
-      console.log("Uploaded Profile Image URL:", imageUrl);
     }
     // Firestore에 bio와 imageUrl 업데이트
     await updateDoc(userDoc, {
-      bio: bio || existingData.bio, // bio가 없다면 기존 bio 유지
-      profileImage: imageUrl || existingData.profileImage, // 이미지가 없다면 기존 이미지 유지
+      bio: bio || existingData.bio,
+      profileImage: imageUrl || existingData.profileImage,
     });
 
     return NextResponse.json({

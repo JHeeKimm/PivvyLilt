@@ -14,7 +14,7 @@ interface ProfileFormValues {
 }
 
 export default function ProfilEditForm() {
-  const { user, setUser } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
   const userProfileImage = user?.profileImage;
   const userBio = user?.bio;
   const [imagePreview, setImagePreview] = useState<File | string | null>(
@@ -40,29 +40,13 @@ export default function ProfilEditForm() {
       formData.append("bio", data.bio);
     }
 
-    // 이미지를 변경하지 않았을 때 기존 이미지를 유지
-    if (typeof imagePreview === "string") {
-      formData.append("imageUrl", imagePreview);
+    // 이미지 처리
+    if (data.profileImage instanceof File) {
+      // 새 이미지 파일만 추가
+      formData.append("profileImage", data.profileImage);
     }
 
-    // 새 이미지 파일이 있을 때 추가
-    if (data.profileImage) {
-      formData.append("image", data.profileImage);
-    }
-    console.log("FormData in onSubmit:", Array.from(formData.entries()));
-
-    // 프로필 수정 API 호출
-    const updatedData = await editProfile(formData);
-
-    // 수정된 데이터를 Zustand 상태에 반영
-    setUser({
-      ...user,
-      bio: data.bio || userBio,
-      profileImage: updatedData.profileImage || userProfileImage,
-      uid: user?.uid || "",
-      email: user?.email || "",
-      nickname: user?.nickname || "",
-    });
+    await editProfile(formData);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -5,6 +5,8 @@ export interface FetchProfileResponse {
 }
 
 export interface EditProfileResponse {
-  bio: string;
-  profileImage: string;
+  data: {
+    bio: string;
+    profileImage: string;
+  };
 }
