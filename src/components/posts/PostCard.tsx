@@ -60,7 +60,9 @@ export default function PostCard({
           {/* User Image */}
           <UserImage profileImage={user?.profileImage || ""} size="sm" />
           <div>
-            <CardTitle className="text-sm font-semibold">{userId}</CardTitle>
+            <CardTitle className="text-sm font-semibold">
+              {user?.nickname}
+            </CardTitle>
             <CardDescription className="text-xs text-gray-500">
               {elapsedTime(createdAt)}
             </CardDescription>
@@ -77,7 +79,6 @@ export default function PostCard({
             alt="User profile"
             fill={true}
             style={{ objectFit: "cover" }}
-            className=""
           />
         </CardContent>
 

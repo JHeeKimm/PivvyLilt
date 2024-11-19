@@ -25,7 +25,7 @@ export const fetchUserPosts = async ({
   pageParam = 1,
 }: QueryFunctionContext) => {
   const response = await customServerRequest<FetchPostsResponse>({
-    endpoint: `/api/posts/readByUser?page=${pageParam}`,
+    endpoint: `/api/posts/read-by-user?page=${pageParam}`,
   });
   if (!response) {
     return { posts: [], nextPage: undefined };

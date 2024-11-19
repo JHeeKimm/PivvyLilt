@@ -24,6 +24,8 @@ export const signUpAPI = async ({
   await setDoc(doc(db, "users", user.uid), {
     nickname,
     email,
+    bio: "",
+    profileImage: "",
   });
 
   return {
