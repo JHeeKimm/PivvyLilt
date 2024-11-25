@@ -18,7 +18,7 @@ export default async function FeedPage() {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <div className="relative md:mt-10 mb-10 p-8 gap-8 flex flex-wrap items-center justify-center md:justify-start">
+      <div className="relative md:mt-10 mb-10 p-8 md:gap-8 gap-16 flex flex-wrap items-center justify-center md:justify-start">
         <FeedItem />
       </div>
     </HydrationBoundary>

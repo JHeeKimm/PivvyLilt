@@ -1,5 +1,6 @@
 import { db, storage } from "@/config/firebase/firebase";
 import { authenticateUser } from "@/lib/auth/authenticateUser";
+import { processAndUploadImage } from "@/utils/image/processAndUploadImage";
 import {
   deleteDoc,
   doc,
@@ -7,12 +8,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-} from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -48,10 +44,17 @@ export async function GET(
       isLikedByUser = likeDocSnap.exists(); // 좋아요 상태 설정
     }
 
-    return NextResponse.json({ post: { ...post, isLikedByUser } });
+    return NextResponse.json({
+      status: 200,
+      message: "해당 게시물 조회 완료",
+      post: { ...post, isLikedByUser },
+    });
   } catch (error) {
     console.error("Error fetching post: ", error);
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "해당 게시물 조회에 실패했습니다." },
+      { status: 500 }
+    );
   }
 }
 
@@ -97,9 +100,8 @@ export async function PUT(
       }
 
       // 새 이미지 업로드
-      const newImageRef = ref(storage, `images/${imageFile.name}`);
-      await uploadBytes(newImageRef, imageFile);
-      imageUrl = await getDownloadURL(newImageRef);
+      const buffer = Buffer.from(await imageFile.arrayBuffer());
+      imageUrl = await processAndUploadImage(buffer, imageFile.name, "images");
     }
 
     // Firestore 데이터 업데이트
@@ -109,7 +111,7 @@ export async function PUT(
       updatedAt: serverTimestamp(),
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ status: 200, message: "게시물 업데이트 완료" });
   } catch (error) {
     console.error("Error updating post:", error);
     return NextResponse.json(
@@ -147,7 +149,7 @@ export async function DELETE(
       const imageRef = ref(storage, imageUrl);
       await deleteObject(imageRef);
     }
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ status: 200, message: "게시물 삭제 완료" });
   } catch (error) {
     console.error("Error deleting post:", error);
     return NextResponse.json(
