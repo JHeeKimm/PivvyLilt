@@ -39,8 +39,13 @@ export default function FeedItem() {
       ) : posts.length === 0 ? (
         <p>현재 피드가 없습니다.</p>
       ) : (
-        posts.map((post: TPosts) => (
-          <PostCard key={post.id} postId={post.id} {...post} />
+        posts.map((post: TPosts, index) => (
+          <PostCard
+            key={post.id}
+            postId={post.id}
+            {...post}
+            priority={index < 4}
+          />
         ))
       )}
 

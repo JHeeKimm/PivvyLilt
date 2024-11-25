@@ -31,17 +31,18 @@ export default function UserPostsSection() {
 
   return (
     <>
-      <section className="grid grid-cols-3 gap-1 p-1">
+      <section className="grid md:grid-cols-3 grid-cols-2 gap-1 p-1">
         {isLoading ? (
           <p>Loading...</p>
         ) : posts.length === 0 ? (
           <p>현재 피드가 없습니다.</p>
         ) : (
-          posts.map((post: TPosts) => (
+          posts.map((post: TPosts, index) => (
             <PhotoCard
               key={post.id}
               postId={post.id}
               imageUrl={post.imageUrl || ""}
+              priority={index < 9}
             />
           ))
         )}

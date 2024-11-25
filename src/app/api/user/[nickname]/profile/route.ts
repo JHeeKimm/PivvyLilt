@@ -1,5 +1,6 @@
 import { db, storage } from "@/config/firebase/firebase";
 import { authenticateUser } from "@/lib/auth/authenticateUser";
+import { processAndUploadImage } from "@/utils/image/processAndUploadImage";
 import {
   collection,
   getDocs,
@@ -7,12 +8,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { deleteObject, ref } from "firebase/storage";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -109,15 +105,18 @@ export async function PUT(
           });
       }
 
-      // 새 이미지 파일을 Firebase Storage에 업로드
-      const newImageRef = ref(
-        storage,
-        `profile_images/${userId}/${imageFile.name}`
+      // 새 이미지 파일 처리 및 Firebase Storage에 업로드
+      const buffer = Buffer.from(await imageFile.arrayBuffer());
+      imageUrl = await processAndUploadImage(
+        buffer,
+        imageFile.name,
+        `profile_images/${userId}`,
+        {
+          width: 256,
+          height: 256,
+          quality: 70,
+        }
       );
-      await uploadBytes(newImageRef, imageFile);
-
-      // 업로드된 새 이미지의 URL 가져오기
-      imageUrl = await getDownloadURL(newImageRef);
     }
     // Firestore에 bio와 imageUrl 업데이트
     await updateDoc(userDoc, {

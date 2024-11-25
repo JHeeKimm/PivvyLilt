@@ -54,7 +54,7 @@ export const updatePost = async (postId: string, formData: FormData) => {
 };
 
 export const deletePost = async (postId: string) => {
-  const response = await customServerRequest({
+  const response = await customClientRequest({
     endpoint: `/api/posts/${postId}`,
     method: "DELETE",
   });

@@ -15,7 +15,8 @@ export default function UserImage({ profileImage, size }: UserImageProps) {
       alt="User profileImage"
       width={dimensions}
       height={dimensions}
-      className="rounded-full"
+      className="rounded-full aspect-square"
+      priority
     />
   ) : (
     <CircleUserIcon

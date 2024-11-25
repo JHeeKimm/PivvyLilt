@@ -30,10 +30,11 @@ export default function PostCard({
   likesCount,
   commentsCount,
   isLikedByUser,
+  priority = false,
   onEdit,
 }: FeedItemProps) {
   const params = useParams();
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   const isDetailPage = params?.postId === postId;
   const isAuthor = user?.uid === userId;
@@ -76,9 +77,13 @@ export default function PostCard({
         <CardContent className="p-0 bg-gray-200 relative min-h-48 max-h-80">
           <Image
             src={imageUrl ? imageUrl : ""}
-            alt="User profile"
+            alt="Post Image"
             fill={true}
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", objectPosition: "center" }}
+            placeholder="blur"
+            blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsrKmpBwAE2QHyUe82OwAAAABJRU5ErkJggg=="
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={priority}
           />
         </CardContent>
 

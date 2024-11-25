@@ -18,6 +18,7 @@ export interface FeedItemProps {
   commentsCount: number;
   likesCount: number;
   isLikedByUser: boolean;
+  priority?: boolean;
   onEdit?: () => void;
 }
 

@@ -61,6 +61,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetchin posts: ", error);
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "전체 게시물 페치에 실패했습니다." },
+      { status: 500 }
+    );
   }
 }
