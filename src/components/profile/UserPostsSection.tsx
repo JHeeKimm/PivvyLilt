@@ -3,11 +3,9 @@
 import PhotoCard from "../posts/PhotoCard";
 import { useFetchUserPosts } from "@/lib/posts/hooks/useFetchUserPosts";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-import { useAuthStore } from "@/store/auth/useAuthStore";
 import { TPosts } from "@/lib/posts/types";
 
-export default function UserPostsSection() {
-  const { user } = useAuthStore();
+export default function UserPostsSection({ userId }: { userId: string }) {
   const {
     data,
     fetchNextPage,
@@ -15,7 +13,7 @@ export default function UserPostsSection() {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useFetchUserPosts(user?.uid as string);
+  } = useFetchUserPosts(userId);
 
   // 관찰 대상 ref
   const triggerRef = useIntersectionObserver({
