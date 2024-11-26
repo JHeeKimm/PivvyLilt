@@ -10,5 +10,6 @@ export const useFetchUserPosts = (userId: string) => {
     queryFn: fetchUserPostsFn,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage,
+    enabled: !!userId,
   });
 };

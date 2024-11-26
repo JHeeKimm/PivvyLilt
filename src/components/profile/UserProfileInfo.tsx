@@ -9,13 +9,19 @@ import Link from "next/link";
 import { PROFILE_ROUTES } from "@/constants/routes";
 import { useFetchFollowerCounts } from "@/lib/follows/hooks/useFetchFollowerCount";
 
-export default function UserProfileInfo({ nickname }: { nickname: string }) {
+export default function UserProfileInfo({
+  nickname,
+  userId,
+}: {
+  nickname: string;
+  userId: string;
+}) {
   const user = useAuthStore((state) => state.user);
   const isMyProfile = user?.nickname === nickname;
   const { data: otherUserData, isLoading } = useFetchProfile(nickname);
   const userData = isMyProfile ? user : otherUserData;
 
-  const { data, error } = useFetchFollowerCounts(user?.uid as string);
+  const { data, error } = useFetchFollowerCounts(userId);
 
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>오류가 발생했습니다. {error.message}</p>;
