@@ -7,6 +7,25 @@ import { queryOptions as postsQueryOptions } from "@/lib/posts/key";
 import { queryOptions as followQueryOptions } from "@/lib/follows/key";
 import { cookies } from "next/headers";
 import { decodeAccessToken } from "@/lib/auth/decodeAccessToken";
+import { fetchUserProfile } from "@/lib/user/api";
+
+export async function generateMetadata({
+  params: { nickname },
+}: {
+  params: { nickname: string };
+}) {
+  const user = await fetchUserProfile(nickname);
+
+  return {
+    title: `${user.nickname}의 프로필`,
+    description: `${user.bio}`,
+    openGraph: {
+      title: `${user.nickname}의 프로필`,
+      description: `${user.bio}`,
+      images: [user.profileImage],
+    },
+  };
+}
 
 export default async function ProfilePage({
   params: { nickname },
