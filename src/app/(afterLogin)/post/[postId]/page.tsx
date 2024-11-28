@@ -2,8 +2,27 @@
 
 import PostDetailItem from "@/components/posts/PostDetailItem";
 import getQueryClient from "@/config/tanstack-query/get-query-client";
+import { fetchPost } from "@/lib/posts/api";
 import { queryOptions } from "@/lib/posts/key";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+
+export async function generateMetadata({
+  params: { postId },
+}: {
+  params: { postId: string };
+}) {
+  const post = await fetchPost(postId);
+
+  return {
+    title: `${post.content} 게시물`,
+    description: `${post.content}`,
+    openGraph: {
+      title: `${post.content} 게시물`,
+      description: `${post.content}`,
+      images: [post.imageUrl ? post.imageUrl : "/thumbnail.png"],
+    },
+  };
+}
 
 export default async function PostDetailPage({
   params: { postId },

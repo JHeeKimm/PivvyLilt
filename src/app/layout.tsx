@@ -8,8 +8,13 @@ import Logo from "@/components/common/Logo";
 import QueryProvider from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
-  title: "PivviLilt",
-  description: "PivviLilt SNS",
+  title: "PivvyLilt",
+  description: "가볍고 즐거운 소통의 공간",
+  openGraph: {
+    title: "PivvyLilt",
+    description: "가볍고 즐거운 소통의 공간",
+    images: ["/thumbnail.png"],
+  },
 };
 
 export default function RootLayout({
