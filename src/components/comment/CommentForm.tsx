@@ -3,8 +3,13 @@ import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { CommentFormProps } from "@/lib/comments/types";
+import { useToastStore } from "@/store/toast/useToastStore";
+import { useRouter } from "next/navigation";
+import { AUTH_ROUTES } from "@/constants/routes";
 
 export default function CommentForm({ postId }: CommentFormProps) {
+  const router = useRouter();
+  const { addToast } = useToastStore();
   const {
     register,
     handleSubmit,
@@ -17,7 +22,8 @@ export default function CommentForm({ postId }: CommentFormProps) {
 
   const onSubmit = async (data: { comment: string }) => {
     if (!user?.uid) {
-      alert("로그인이 필요합니다.");
+      addToast("로그인이 필요합니다.", "error");
+      router.push(AUTH_ROUTES.LOGIN);
       return;
     }
 
