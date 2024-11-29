@@ -4,9 +4,11 @@ import { queryKeys } from "../key";
 import { updateUserProfile } from "../api";
 import { EditProfileResponse } from "../types";
 import { useAuthStore } from "@/store/auth/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export const useEditProfile = (nickname: string) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const { addToast } = useToastStore();
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
@@ -28,6 +30,7 @@ export const useEditProfile = (nickname: string) => {
         nickname: user?.nickname || "",
       });
 
+      router.back();
       addToast("프로필 수정 성공!", "success");
     },
     onError: (error: Error) => {

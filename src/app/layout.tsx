@@ -6,6 +6,7 @@ import NavigationBar from "@/components/common/NavigationBar";
 import SideBar from "@/components/common/SideBar";
 import Logo from "@/components/common/Logo";
 import QueryProvider from "@/providers/QueryProvider";
+import { Toast } from "@/components/common/toast/Toast";
 
 export const metadata: Metadata = {
   title: "PivvyLilt",
@@ -43,6 +44,7 @@ export default function RootLayout({
               </div>
             )}
             <main className="w-full flex justify-center items-center">
+              <Toast />
               {children}
             </main>
             {modal}

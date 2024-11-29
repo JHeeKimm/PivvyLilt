@@ -12,11 +12,9 @@ export const useEditPost = (postId: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.post(postId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.posts });
-
-      addToast("게시글 등록 성공!", "success");
     },
     onError: (error: Error) => {
-      addToast("게시글 등록에 실패하였습니다.", "error");
+      addToast("게시글 수정에 실패하였습니다.", "error");
       console.error(error);
     },
   });
