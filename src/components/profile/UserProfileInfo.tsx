@@ -3,7 +3,7 @@
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useFetchProfile } from "@/lib/user/hooks/useFetchProfile";
 import UserImage from "../common/UserImage";
-import IconButton from "../common/IconButton";
+import IconButton from "../common/buttons/IconButton";
 import { Pencil2Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { PROFILE_ROUTES } from "@/constants/routes";

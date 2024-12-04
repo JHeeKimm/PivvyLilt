@@ -16,10 +16,10 @@ import CommentsSection from "../comment/CommentsSection";
 import { elapsedTime } from "@/utils/elapsedTime";
 import UserImage from "../common/UserImage";
 import { useLikeMutation } from "@/lib/likes/hooks/useLikeMutation";
-import LikeButton from "../common/LikeButton";
+import LikeButton from "../common/buttons/LikeButton";
 import Link from "next/link";
-import CommentButton from "../common/CommentButton";
-import DotMenuButton from "../common/DotMenuButton";
+import CommentButton from "../common/buttons/CommentButton";
+import DotMenuButton from "../common/buttons/DotMenuButton";
 
 export default function PostCard({
   postId,
@@ -30,6 +30,7 @@ export default function PostCard({
   likesCount,
   commentsCount,
   isLikedByUser,
+  author,
   priority = false,
   onEdit,
 }: FeedItemProps) {
@@ -59,10 +60,10 @@ export default function PostCard({
       <CardHeader className="p-4 flex flex-row items-center justify-between">
         <div className="flex items-center space-x-3">
           {/* User Image */}
-          <UserImage profileImage={user?.profileImage || ""} size="sm" />
+          <UserImage profileImage={author.profileImage || ""} size="sm" />
           <div>
             <CardTitle className="text-sm font-semibold">
-              {user?.nickname}
+              {author.nickname}
             </CardTitle>
             <CardDescription className="text-xs text-gray-500">
               {elapsedTime(createdAt)}

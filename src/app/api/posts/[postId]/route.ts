@@ -31,11 +31,26 @@ export async function GET(
         { status: 404 }
       );
     }
+
+    const postData = docSnapshot.data();
     const post = {
-      ...docSnapshot.data(),
+      ...postData,
       id: docSnapshot.id,
       createdAt: docSnapshot.data().createdAt.toDate().toLocaleString(),
     };
+
+    // 게시물 작성자 정보 가져오기
+    const postUserId = postData.userId;
+    let authorData = null;
+
+    if (postUserId) {
+      const userDocRef = doc(db, "users", postUserId);
+      const userDocSnap = await getDoc(userDocRef);
+      if (userDocSnap.exists()) {
+        authorData = userDocSnap.data();
+      }
+    }
+
     // 좋아요 여부 확인 (userId가 존재할 때만)
     let isLikedByUser = false;
     if (userId) {
@@ -47,7 +62,7 @@ export async function GET(
     return NextResponse.json({
       status: 200,
       message: "해당 게시물 조회 완료",
-      post: { ...post, isLikedByUser },
+      post: { ...post, isLikedByUser, author: authorData },
     });
   } catch (error) {
     console.error("Error fetching post: ", error);

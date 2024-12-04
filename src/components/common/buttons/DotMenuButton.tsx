@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import IconButton from "./IconButton";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useFollowMutation } from "@/lib/follows/hooks/useFollowMutation";
