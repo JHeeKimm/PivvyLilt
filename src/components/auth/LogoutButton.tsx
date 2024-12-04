@@ -2,6 +2,7 @@
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useRouter } from "next/navigation";
 // import { AUTH_ROUTES } from "@/constants/routes";
+import { ExitIcon } from "@radix-ui/react-icons";
 
 export const LogoutButton = () => {
   const router = useRouter();
@@ -14,5 +15,10 @@ export const LogoutButton = () => {
     router.refresh();
   };
 
-  return <button onClick={handleLogout}>로그아웃</button>;
+  return (
+    <>
+      <ExitIcon className="text-xl" onClick={handleLogout} />
+      <span>Logout</span>
+    </>
+  );
 };

@@ -1,5 +1,5 @@
 import IconButton from "./IconButton";
-import { CommentIcon } from "../common/icons/CommentIcon";
+import { CommentIcon } from "../icons/CommentIcon";
 
 interface CommentButtonProps {
   count?: number;

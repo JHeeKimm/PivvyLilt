@@ -31,15 +31,27 @@ export async function GET(req: NextRequest) {
         const postData = docSnap.data();
         const postId = docSnap.id;
 
-        // 각 게시물에 대해 `${postId}_${userId}` 형식의 좋아요 문서 확인
+        // 각 게시물의 좋아요 여부 확인
         const likeDocRef = doc(db, "likes", `${postId}_${userId}`);
         const likeDocSnap = await getDoc(likeDocRef);
 
+        // 게시물 작성자 정보 가져오기
+        const postUserId = postData.userId;
+        let authorData = null;
+
+        if (postUserId) {
+          const userDocRef = doc(db, "users", postUserId);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            authorData = userDocSnap.data();
+          }
+        }
         return {
           ...postData,
           id: postId,
           createdAt: postData.createdAt.toDate().toISOString(),
-          isLikedByUser: likeDocSnap.exists(), // 문서 존재 여부로 좋아요 확인
+          isLikedByUser: likeDocSnap.exists(),
+          author: authorData,
         };
       })
     );

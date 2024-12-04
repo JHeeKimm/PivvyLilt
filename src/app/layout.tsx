@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { headers } from "next/headers";
 import { PUBLIC_ROUTES } from "@/constants/routes";
-import NavigationBar from "@/components/common/NavigationBar";
-import SideBar from "@/components/common/SideBar";
+import NavigationBar from "@/components/common/nav/NavigationBar";
+import SideBar from "@/components/common/nav/SideBar";
 import Logo from "@/components/common/Logo";
 import QueryProvider from "@/providers/QueryProvider";
 import { Toast } from "@/components/common/toast/Toast";
@@ -35,15 +35,15 @@ export default function RootLayout({
         <QueryProvider>
           <div className="w-full flex flex-col md:flex-row justify-center">
             {!isPublicRoute && (
-              <div className="md:h-screen flex flex-col">
+              <div className="md:h-full md:fixed top-0 left-0 flex flex-col">
                 <Logo className="p-4" />
-                <div>
+                <div className="md:h-full">
                   <SideBar />
                   <NavigationBar />
                 </div>
               </div>
             )}
-            <main className="w-full flex justify-center items-center">
+            <main className="md:ml-64 w-full flex justify-center items-center">
               <Toast />
               {children}
             </main>
