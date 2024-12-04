@@ -7,6 +7,7 @@ import {
   getDoc,
   getDocs,
   query,
+  QueryDocumentSnapshot,
   where,
 } from "firebase/firestore";
 import { NextRequest, NextResponse } from "next/server";
@@ -51,10 +52,14 @@ export async function GET(req: NextRequest) {
     // follows 컬렉션에서 팔로워/팔로잉 목록을 가져옴
     const followsSnapshot = await getDocs(followsQuery);
     const followsData: FollowData[] = followsSnapshot.docs.map(
-      (doc: { id: string; data: () => any }) => ({
-        id: doc.id,
-        ...doc.data(),
-      })
+      (doc: QueryDocumentSnapshot) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          followerId: data.followerId,
+          followingId: data.followingId,
+        };
+      }
     );
 
     // follows의 각 userId로 users 컬렉션에서 사용자 정보 가져오기
