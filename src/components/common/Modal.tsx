@@ -30,7 +30,7 @@ export default function Modal({ children }: { children: ReactNode }) {
       onClick={handleClose}
     >
       <div
-        className="w-4/5 max-w-lg rounded-lg bg-white"
+        className="w-4/5 max-w-md rounded-lg bg-white"
         onClick={(e) => e.stopPropagation()}
       >
         {children}
