@@ -55,7 +55,7 @@ export default function PostCard({
   };
 
   return (
-    <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
+    <Card className="grow min-w-80 max-w-md bg-white shadow-md rounded-lg">
       {/* Header: User Info and 더보기 Button */}
       <CardHeader className="p-4 flex flex-row items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -80,7 +80,7 @@ export default function PostCard({
             src={imageUrl ? imageUrl : ""}
             alt="Post Image"
             fill={true}
-            style={{ objectFit: "cover", objectPosition: "center" }}
+            className="object-cover"
             placeholder="blur"
             blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsrKmpBwAE2QHyUe82OwAAAABJRU5ErkJggg=="
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
