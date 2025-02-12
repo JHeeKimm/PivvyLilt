@@ -27,7 +27,7 @@ export default function UserProfileInfo({
   if (error) return <p>오류가 발생했습니다. {error.message}</p>;
 
   return (
-    <div className="gap-y-6 flex flex-col items-center p-6 bg-gray-800 text-white">
+    <div className="gap-y-6 flex flex-col items-center p-6 bg-primary text-white">
       <div className="relative">
         <UserImage
           profileImage={(userData?.profileImage as string) || ""}
