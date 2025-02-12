@@ -1,21 +1,16 @@
 import FeedItem from "@/components/posts/FeedItem";
 import getQueryClient from "@/config/tanstack-query/get-query-client";
-import { POST_KEY } from "@/lib/posts/key";
+import { queryOptions } from "@/lib/posts/key";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function FeedPage() {
   const queryClient = getQueryClient();
+  const { queryKey: fetchPostsKey, queryFn: fetchPostsFn } =
+    queryOptions.posts();
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: [POST_KEY],
-    queryFn: async () => {
-      console.log("Fetching data from server");
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?page=1`
-      );
-      if (!res.ok) throw new Error("Failed to fetch initial posts");
-      return await res.json();
-    },
+    queryKey: fetchPostsKey,
+    queryFn: fetchPostsFn,
     initialPageParam: 1,
   });
 
@@ -23,7 +18,7 @@ export default async function FeedPage() {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <div className="relative md:mt-10 mb-10 p-8 gap-8 flex flex-wrap items-center justify-center md:justify-start">
+      <div className="relative mt-1 md:mt-11 mb-10 p-8 md:gap-8 gap-16 flex flex-wrap items-center justify-center md:justify-start">
         <FeedItem />
       </div>
     </HydrationBoundary>

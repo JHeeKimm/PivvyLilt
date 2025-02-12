@@ -40,7 +40,6 @@ export default function CreatePost() {
     }
 
     await createPost(formData);
-    alert("게시글 등록 성공!");
     reset();
     setImagePreview(null);
     router.push(BASE_URL);

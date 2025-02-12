@@ -1,35 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToastStore } from "@/store/toast/useToastStore";
-import { POST_KEY } from "../key";
-import { useAuthStore } from "@/store/auth/useAuthStore";
+import { queryKeys } from "../key";
+import { updatePost } from "../api";
 
 export const useEditPost = (postId: string) => {
   const queryClient = useQueryClient();
   const { addToast } = useToastStore();
-  const { user } = useAuthStore();
-  const userId = user?.uid;
 
   return useMutation<unknown, Error, FormData>({
-    mutationFn: async (formData: FormData) => {
-      const response = await fetch(`/api/posts/${postId}`, {
-        method: "PUT",
-        body: formData,
-        cache: "no-store",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update post");
-      }
-      return response.json();
-    },
+    mutationFn: (formData) => updatePost(postId, formData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [POST_KEY, postId, userId] });
-      queryClient.invalidateQueries({ queryKey: [POST_KEY] });
-
-      addToast("게시글 등록 성공!", "success");
+      queryClient.invalidateQueries({ queryKey: queryKeys.post(postId) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     },
     onError: (error: Error) => {
-      addToast("게시글 등록에 실패하였습니다.", "error");
+      addToast("게시글 수정에 실패하였습니다.", "error");
       console.error(error);
     },
   });

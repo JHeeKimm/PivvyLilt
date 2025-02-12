@@ -1,4 +1,5 @@
 import { db } from "@/config/firebase/firebase";
+import { authenticateUser } from "@/lib/auth/authenticateUser";
 import {
   collection,
   doc,
@@ -15,7 +16,10 @@ export async function GET(req: NextRequest) {
   const page = Number(searchParams.get("page")) || 1;
   const pageSize = Number(searchParams.get("pageSize")) || 4;
 
-  const userId = req.headers.get("user-id");
+  const userId = await authenticateUser(req);
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
 
   try {
     const postsRef = collection(db, "posts");
@@ -27,15 +31,27 @@ export async function GET(req: NextRequest) {
         const postData = docSnap.data();
         const postId = docSnap.id;
 
-        // 각 게시물에 대해 `${postId}_${userId}` 형식의 좋아요 문서 확인
+        // 각 게시물의 좋아요 여부 확인
         const likeDocRef = doc(db, "likes", `${postId}_${userId}`);
         const likeDocSnap = await getDoc(likeDocRef);
 
+        // 게시물 작성자 정보 가져오기
+        const postUserId = postData.userId;
+        let authorData = null;
+
+        if (postUserId) {
+          const userDocRef = doc(db, "users", postUserId);
+          const userDocSnap = await getDoc(userDocRef);
+          if (userDocSnap.exists()) {
+            authorData = userDocSnap.data();
+          }
+        }
         return {
           ...postData,
           id: postId,
           createdAt: postData.createdAt.toDate().toISOString(),
-          isLikedByUser: likeDocSnap.exists(), // 문서 존재 여부로 좋아요 확인
+          isLikedByUser: likeDocSnap.exists(),
+          author: authorData,
         };
       })
     );
@@ -57,6 +73,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Error fetchin posts: ", error);
-    return NextResponse.error();
+    return NextResponse.json(
+      { error: "전체 게시물 페치에 실패했습니다." },
+      { status: 500 }
+    );
   }
 }

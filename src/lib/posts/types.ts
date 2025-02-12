@@ -7,6 +7,7 @@ export type TPosts = {
   commentsCount: number;
   likesCount: number;
   isLikedByUser: boolean;
+  author: { nickname: string; profileImage?: string | null };
 };
 
 export interface FeedItemProps {
@@ -18,6 +19,8 @@ export interface FeedItemProps {
   commentsCount: number;
   likesCount: number;
   isLikedByUser: boolean;
+  author: { nickname: string; profileImage?: string | null };
+  priority?: boolean;
   onEdit?: () => void;
 }
 
@@ -30,4 +33,13 @@ export interface INewPost {
 export interface EditPostFormProps {
   post: TPosts;
   onCancel: () => void;
+}
+
+export interface FetchPostsResponse {
+  posts: TPosts[];
+  nextPage?: number;
+}
+
+export interface FetchPostResponse {
+  post: TPosts;
 }

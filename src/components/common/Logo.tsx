@@ -9,8 +9,10 @@ export default function Logo({ className, withBorder = false }: LogoProps) {
   return (
     <div
       className={cn(
-        `min-w-80 text-2xl font-bold ${
-          withBorder ? "border-b" : "md:min-w-0 md:bg-gray-600  md:text-white"
+        `w-64 text-2xl font-bold ${
+          withBorder
+            ? "w-full border-b"
+            : "md:min-w-0 md:bg-primary md:text-white"
         }`,
         className
       )}

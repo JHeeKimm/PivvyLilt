@@ -6,12 +6,8 @@ import { TPosts } from "@/lib/posts/types";
 import AddPostButton from "@/components/posts/AddPostButton";
 import { PostCardSkeleton } from "./PostCardSkeleton";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
-// import { useUserLikes } from "@/lib/likes/hooks/useUserLikes";
-import { useAuthStore } from "@/store/auth/useAuthStore";
 
 export default function FeedItem() {
-  const { user } = useAuthStore();
-
   const {
     data,
     fetchNextPage,
@@ -19,7 +15,7 @@ export default function FeedItem() {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useFetchPosts(user?.uid as string);
+  } = useFetchPosts();
 
   // 관찰 대상 ref
   const triggerRef = useIntersectionObserver({
@@ -30,7 +26,6 @@ export default function FeedItem() {
   });
 
   const posts = data?.pages.flatMap((page) => page.posts) || [];
-  // const { data: likedPostIds } = useUserLikes(user?.uid as string);
 
   if (error) return <p>오류가 발생했습니다. {error.message}</p>;
 
@@ -44,8 +39,13 @@ export default function FeedItem() {
       ) : posts.length === 0 ? (
         <p>현재 피드가 없습니다.</p>
       ) : (
-        posts.map((post: TPosts) => (
-          <PostCard key={post.id} postId={post.id} {...post} />
+        posts.map((post: TPosts, index) => (
+          <PostCard
+            key={post.id}
+            postId={post.id}
+            {...post}
+            priority={index < 4}
+          />
         ))
       )}
 

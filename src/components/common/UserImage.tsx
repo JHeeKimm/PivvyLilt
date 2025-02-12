@@ -3,11 +3,11 @@ import { CircleUserIcon } from "./icons/UserIcon";
 
 interface UserImageProps {
   profileImage?: string;
-  size?: "sm" | "lg";
+  size?: "sm" | "lg" | "xl";
 }
 
 export default function UserImage({ profileImage, size }: UserImageProps) {
-  const dimensions = size === "sm" ? 40 : 80;
+  const dimensions = size === "sm" ? 40 : size === "lg" ? 80 : 120;
   const borderWidth = size === "sm" ? "border-2" : "border-4";
   return profileImage ? (
     <Image
@@ -15,7 +15,8 @@ export default function UserImage({ profileImage, size }: UserImageProps) {
       alt="User profileImage"
       width={dimensions}
       height={dimensions}
-      className="rounded-full"
+      className="rounded-full aspect-square"
+      priority
     />
   ) : (
     <CircleUserIcon

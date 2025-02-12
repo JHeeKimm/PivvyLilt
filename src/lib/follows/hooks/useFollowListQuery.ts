@@ -10,8 +10,8 @@ export const useFollowListQuery = (userId: string, type: string) => {
   return useQuery({
     queryKey: [type, userId],
     queryFn: async () => {
-      const response = await fetch(`/api/follows?type=${type}`, {
-        headers: { "Content-Type": "application/json", "user-id": userId },
+      const response = await fetch(`/api/follows/list?type=${type}`, {
+        headers: { "Content-Type": "application/json" },
       });
       if (!response.ok) {
         throw new Error(`Failed to fetch ${type} list`);

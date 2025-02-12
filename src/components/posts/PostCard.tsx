@@ -11,15 +11,15 @@ import Image from "next/image";
 import { FeedItemProps } from "@/lib/posts/types";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useParams } from "next/navigation";
-import { useDeltePost } from "@/lib/posts/hooks/useDeletePost";
+import { useDeletePost } from "@/lib/posts/hooks/useDeletePost";
 import CommentsSection from "../comment/CommentsSection";
 import { elapsedTime } from "@/utils/elapsedTime";
 import UserImage from "../common/UserImage";
 import { useLikeMutation } from "@/lib/likes/hooks/useLikeMutation";
-import LikeButton from "../common/LikeButton";
+import LikeButton from "../common/buttons/LikeButton";
 import Link from "next/link";
-import CommentButton from "../common/CommentButton";
-import DotMenuButton from "../common/DotMenuButton";
+import CommentButton from "../common/buttons/CommentButton";
+import DotMenuButton from "../common/buttons/DotMenuButton";
 
 export default function PostCard({
   postId,
@@ -30,10 +30,12 @@ export default function PostCard({
   likesCount,
   commentsCount,
   isLikedByUser,
+  author,
+  priority = false,
   onEdit,
 }: FeedItemProps) {
   const params = useParams();
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   const isDetailPage = params?.postId === postId;
   const isAuthor = user?.uid === userId;
@@ -41,7 +43,7 @@ export default function PostCard({
   const followerId = user?.uid as string;
   const followingId = userId;
 
-  const { mutateAsync: deletePost } = useDeltePost(postId);
+  const { mutateAsync: deletePost } = useDeletePost(postId);
   const handleDelete = async () => {
     if (confirm("정말로 삭제하시겠습니까?")) {
       await deletePost();
@@ -53,14 +55,16 @@ export default function PostCard({
   };
 
   return (
-    <Card className="grow min-w-80 max-w-lg bg-white shadow-md rounded-lg">
+    <Card className="grow min-w-80 max-w-md bg-white shadow-md rounded-lg">
       {/* Header: User Info and 더보기 Button */}
       <CardHeader className="p-4 flex flex-row items-center justify-between">
         <div className="flex items-center space-x-3">
           {/* User Image */}
-          <UserImage profileImage={user?.profileImage || ""} size="sm" />
+          <UserImage profileImage={author.profileImage || ""} size="sm" />
           <div>
-            <CardTitle className="text-sm font-semibold">{userId}</CardTitle>
+            <CardTitle className="text-sm font-semibold">
+              {author.nickname}
+            </CardTitle>
             <CardDescription className="text-xs text-gray-500">
               {elapsedTime(createdAt)}
             </CardDescription>
@@ -74,10 +78,13 @@ export default function PostCard({
         <CardContent className="p-0 bg-gray-200 relative min-h-48 max-h-80">
           <Image
             src={imageUrl ? imageUrl : ""}
-            alt="User profile"
+            alt="Post Image"
             fill={true}
-            style={{ objectFit: "cover" }}
-            className=""
+            className="object-cover"
+            placeholder="blur"
+            blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsrKmpBwAE2QHyUe82OwAAAABJRU5ErkJggg=="
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={priority}
           />
         </CardContent>
 

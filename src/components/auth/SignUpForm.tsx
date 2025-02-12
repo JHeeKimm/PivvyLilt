@@ -9,9 +9,74 @@ import { useFormState } from "react-dom";
 import { createUser } from "@/actions/createUser";
 import { AUTH_ROUTES } from "@/constants/routes";
 import Logo from "../common/Logo";
+import { useState } from "react";
+import { SignUpSchema } from "@/lib/auth/schema";
+import { checkAvailability } from "@/lib/auth/checkAvailability";
+import { debounce } from "@/utils/debounce";
 
 export default function SignUpForm() {
   const [state, formAction, isPending] = useFormState(createUser, undefined);
+  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+  const [formData, setFormData] = useState({
+    nickname: "",
+    email: "",
+    password: "",
+  });
+  const [touched, setTouched] = useState<{ [key: string]: boolean }>({
+    nickname: false,
+    email: false,
+    password: false,
+  });
+
+  const validateField = async (name: string, value: string) => {
+    const newErrors = { ...errors };
+
+    const data = { ...formData, [name]: value };
+    const validation = SignUpSchema.safeParse(data);
+
+    if (!validation.success) {
+      const fieldErrors = validation.error.flatten().fieldErrors;
+      if (fieldErrors[name as keyof typeof fieldErrors]) {
+        newErrors[name] = fieldErrors[
+          name as keyof typeof fieldErrors
+        ] as string[]; // 해당 필드의 에러만 업데이트
+      } else {
+        delete newErrors[name]; // 해당 필드에 에러가 없다면 삭제
+      }
+    } else {
+      delete newErrors[name]; // 전체 검증 통과 시 해당 필드 에러 삭제
+    }
+
+    // 중복 검사 (닉네임과 이메일만)
+    if (name === "nickname" || name === "email") {
+      const isAvailable = await checkAvailability(name, value);
+      if (!isAvailable) {
+        newErrors[name] = [
+          `이미 사용 중인 ${name === "nickname" ? "닉네임" : "이메일"}입니다.`,
+        ];
+      }
+    }
+
+    setErrors(newErrors);
+  };
+
+  // 디바운스 적용된 유효성 검사
+  const debouncedValidateField = debounce(validateField, 500);
+
+  // 입력이 변경될 때마다 호출되는 함수 (디바운스 적용)
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    // 입력 값 업데이트
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // 첫 입력 시에만 touched 업데이트
+    if (!touched[name]) {
+      setTouched((prev) => ({ ...prev, [name]: true }));
+    }
+
+    debouncedValidateField(name, value);
+  };
 
   return (
     <div className="flex gap-x-20 justify-center items-center">
@@ -26,9 +91,11 @@ export default function SignUpForm() {
               name="nickname"
               placeholder="닉네임을 입력해주세요"
               required
+              value={formData.nickname}
+              onChange={handleInputChange}
             />
-            {state?.errors?.nickname && (
-              <ErrorMessage message={state?.errors?.nickname[0]} />
+            {touched.nickname && errors.nickname && (
+              <ErrorMessage message={errors.nickname[0]} />
             )}
           </div>
           <div className="">
@@ -38,9 +105,11 @@ export default function SignUpForm() {
               name="email"
               placeholder="example@example.com"
               required
+              value={formData.email}
+              onChange={handleInputChange}
             />
-            {state?.errors?.email && (
-              <ErrorMessage message={state?.errors?.email[0]} />
+            {touched.email && errors.email && (
+              <ErrorMessage message={errors.email[0]} />
             )}
           </div>
           <div className="">
@@ -50,15 +119,24 @@ export default function SignUpForm() {
               name="password"
               placeholder="********"
               required
+              value={formData.password}
+              onChange={handleInputChange}
             />
-            {state?.errors?.password && (
-              <ErrorMessage message={state?.errors?.password[0]} />
+            <p className="max-w-xs break-words text-xs text-gray-600 mt-1 ml-1">
+              비밀번호는 최소 8자 이상이며, 영문자, 숫자, 특수문자를 포함해야
+              합니다.
+            </p>
+            {touched.password && errors.password && (
+              <ErrorMessage message={errors.password[0]} />
             )}
           </div>
           {state?.errorMessage && (
             <ErrorMessage message={state?.errorMessage} />
           )}
-          <Button disabled={isPending} className="">
+          <Button
+            disabled={Object.keys(errors).length > 0 || isPending}
+            className=""
+          >
             회원가입
           </Button>
         </form>
@@ -66,7 +144,6 @@ export default function SignUpForm() {
           이미 계정이 있으신가요?
         </Link>
       </div>
-      {/* <div className="basis-56">이미지</div> */}
     </div>
   );
 }

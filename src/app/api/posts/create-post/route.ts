@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db, storage } from "@/config/firebase/firebase";
+import { db } from "@/config/firebase/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { processAndUploadImage } from "@/utils/image/processAndUploadImage";
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,12 +16,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
     let imageUrl = "";
     if (imageFile) {
-      const storageRef = ref(storage, `images/${imageFile.name}`);
-      await uploadBytes(storageRef, imageFile);
-      imageUrl = await getDownloadURL(storageRef);
+      const buffer = Buffer.from(await imageFile.arrayBuffer());
+      imageUrl = await processAndUploadImage(buffer, imageFile.name, "images");
     }
+
     await addDoc(collection(db, "posts"), {
       content,
       imageUrl,
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
       likesCount: 0,
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ status: 200, message: "게시물 추가 완료" });
   } catch (error) {
     console.error("Error adding post:", error);
     return NextResponse.json(

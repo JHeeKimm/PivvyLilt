@@ -8,13 +8,12 @@ export async function PATCH(
 ) {
   const { commentId } = params;
   const data = await req.json();
-  const comment = data.comment?.trim();
-
-  console.log("PATCH comment", comment);
+  const comment = data.trim();
 
   if (!comment) {
     return NextResponse.json({ error: "Comment is required" }, { status: 400 });
   }
+
   try {
     const commentRef = doc(db, "comments", commentId);
     await updateDoc(commentRef, {

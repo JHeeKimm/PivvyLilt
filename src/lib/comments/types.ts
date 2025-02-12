@@ -22,3 +22,8 @@ export interface CommentItemProps {
   createdAt: string;
   postId: string;
 }
+
+export interface FetchCommentsResponse {
+  comments: TComments[];
+  nextPage?: number;
+}

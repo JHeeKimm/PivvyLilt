@@ -55,7 +55,7 @@ export default function PostFormLayout({
             {title}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex-grow flex flex-col min-h-60 p-0 mt-4 space-y-4">
+        <CardContent className="flex-grow flex flex-col p-0 mt-4 space-y-4">
           <textarea
             id="content"
             {...register("content")}
@@ -68,29 +68,32 @@ export default function PostFormLayout({
               message={errors.content.message as string}
             ></ErrorMessage>
           )}
-          {imagePreview && (
-            <div className="relative">
-              <Image
-                src={
-                  typeof imagePreview === "string"
-                    ? imagePreview
-                    : URL.createObjectURL(imagePreview)
-                }
-                alt="Preview"
-                width={500}
-                height={280}
-                className="rounded-lg object-contain"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="absolute top-2 left-2 text-white bg-black bg-opacity-50 rounded-full"
-                onClick={() => setImagePreview(null)}
-              >
-                ✕
-              </Button>
-            </div>
-          )}
+          <div className="relative min-h-48">
+            {imagePreview && (
+              <>
+                {" "}
+                <Image
+                  src={
+                    typeof imagePreview === "string"
+                      ? imagePreview
+                      : URL.createObjectURL(imagePreview)
+                  }
+                  alt="Preview"
+                  width={500}
+                  height={280}
+                  className="rounded-lg object-contain max-h-[280px]"
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-2 left-2 text-white bg-black bg-opacity-50 rounded-full"
+                  onClick={() => setImagePreview(null)}
+                >
+                  ✕
+                </Button>
+              </>
+            )}
+          </div>
         </CardContent>
         <CardFooter className="p-0 mt-4 gap-8 justify-between">
           <div>
