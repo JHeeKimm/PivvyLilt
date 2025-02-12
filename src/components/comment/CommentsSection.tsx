@@ -29,9 +29,9 @@ export default function CommentsSection({ postId }: CommentSectionProps) {
       <div className="border border-gray-200 my-4"></div>
       <div className="p-2">
         {isLoading ? (
-          <p>Loading comments...</p>
+          <p className="m-1.5">Loading comments...</p>
         ) : comments.length === 0 ? (
-          <p>댓글이 없습니다. 댓글을 남겨보세요.</p>
+          <p className="m-1.5">댓글이 없습니다. 댓글을 남겨보세요.</p>
         ) : (
           comments.map((comment: TComments) => (
             <CommentItem key={comment.id} commentId={comment.id} {...comment} />

@@ -35,7 +35,7 @@ export default function RootLayout({
         <QueryProvider>
           <div className="w-full flex flex-col md:flex-row justify-center">
             {!isPublicRoute && (
-              <div className="md:h-full md:fixed top-0 left-0 flex flex-col">
+              <div className="md:h-full md:fixed top-0 left-0 flex flex-col md:shadow">
                 <Logo className="p-4" />
                 <div className="md:h-full">
                   <SideBar />
