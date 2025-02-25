@@ -43,7 +43,11 @@ export default function RootLayout({
                 </div>
               </div>
             )}
-            <main className="md:ml-64 w-full flex justify-center items-center">
+            <main
+              className={`w-full flex justify-center items-center ${
+                !isPublicRoute ? "md:ml-64" : ""
+              }`}
+            >
               <Toast />
               {children}
             </main>
