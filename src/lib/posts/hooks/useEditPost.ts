@@ -10,6 +10,7 @@ export const useEditPost = (postId: string) => {
   return useMutation<unknown, Error, FormData>({
     mutationFn: (formData) => updatePost(postId, formData),
     onSuccess: () => {
+      addToast("게시글 수정 성공!", "success");
       queryClient.invalidateQueries({ queryKey: queryKeys.post(postId) });
       queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     },
