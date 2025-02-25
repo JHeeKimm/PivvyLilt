@@ -1,12 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { queryKeys } from "../key";
 import { updateFollow } from "../api";
+import { useToastStore } from "@/store/toast/useToastStore";
 
 export function useFollowMutation(
   followingId: string,
   followerId: string,
   isFollowingState: boolean
 ) {
+  const { addToast } = useToastStore();
   const queryClient = useQueryClient();
   const isFollowingQueryKey = queryKeys.isFollowing(followerId, followingId);
   const followerCountsKey = queryKeys.followCounts(followerId);
@@ -38,6 +40,13 @@ export function useFollowMutation(
           context.previousIsFollowing
         );
       }
+      addToast("좋아요 업데이트에 실패하였습니다.", "error");
+    },
+    onSuccess: () => {
+      addToast(
+        isFollowingState ? "언팔로우 합니다." : "팔로우 합니다.",
+        "success"
+      );
     },
     // 성공 또는 실패 후 쿼리 무효화하여 서버에서 최신 데이터 재요청
     onSettled: () => {

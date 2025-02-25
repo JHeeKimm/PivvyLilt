@@ -26,7 +26,7 @@ export default function Modal({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
+      className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-60"
       onClick={handleClose}
     >
       <div
