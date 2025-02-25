@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { useFormState } from "react-dom";
 import { authenticate } from "@/actions/authenticate";
-import { AUTH_ROUTES } from "@/constants/routes";
+import { AUTH_ROUTES, BASE_URL } from "@/constants/routes";
 import { useAuthStore } from "@/store/auth/useAuthStore";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Logo from "../common/Logo";
 import Image from "next/image";
 
@@ -19,11 +19,13 @@ export default function LoginForm() {
   const [state, formAction, isPending] = useFormState(authenticate, undefined);
   const setUser = useAuthStore((state) => state.setUser);
   const setIsLogin = useAuthStore((state) => state.setIsLogin);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (state?.success) {
+      setIsLoading(true);
+
       const { uid, email, nickname, bio, profileImage } = state.user;
-      console.log("LoginForm state.user", state.user);
       setUser({
         uid,
         email,
@@ -32,10 +34,18 @@ export default function LoginForm() {
         profileImage,
       });
       setIsLogin(true);
-      // router.replace(BASE_URL);
-      router.refresh();
+
+      setTimeout(() => {
+        router.replace(BASE_URL);
+        router.refresh();
+        setIsLoading(false);
+      }, 100);
     }
   }, [state, setUser, setIsLogin, router]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex md:flex-row flex-col gap-x-20 justify-center items-center">
