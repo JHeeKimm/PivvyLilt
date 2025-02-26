@@ -9,10 +9,12 @@ import { useFormState } from "react-dom";
 import { createUser } from "@/actions/createUser";
 import { AUTH_ROUTES } from "@/constants/routes";
 import Logo from "../common/Logo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SignUpSchema } from "@/lib/auth/schema";
 import { checkAvailability } from "@/lib/auth/checkAvailability";
 import { debounce } from "@/utils/debounce";
+import { useToastStore } from "@/store/toast/useToastStore";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
   const [state, formAction, isPending] = useFormState(createUser, undefined);
@@ -27,6 +29,16 @@ export default function SignUpForm() {
     email: false,
     password: false,
   });
+
+  const addToast = useToastStore((state) => state.addToast);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.status === "success") {
+      addToast(state.message, "success");
+      router.push(AUTH_ROUTES.LOGIN);
+    }
+  }, [state, addToast]);
 
   const validateField = async (name: string, value: string) => {
     const newErrors = { ...errors };
