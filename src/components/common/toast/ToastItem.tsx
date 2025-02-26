@@ -53,7 +53,7 @@ export const ToastItem: React.FC<ToastItemProps> = ({ toast }) => {
       className={`max-w-md w-full ${backgroundColor} shadow-lg rounded-lg pointer-events-auto
       flex ring-1 ring-black ring-opacity-5
       transition-transform duration-300 transform ${
-        visible ? "translate-y-0 opacity-100" : "-translate-y-5 opacity-0"
+        visible ? "translate-y-4 opacity-100" : "-translate-y-5 opacity-0"
       }`}
     >
       <div className="flex-1 p-4 flex items-center">

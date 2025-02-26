@@ -3,8 +3,6 @@
 import { SignUpSchema } from "@/lib/auth/schema";
 import { signUpAPI } from "@/lib/auth/api";
 import { AuthError } from "firebase/auth";
-import { redirect } from "next/navigation";
-import { AUTH_ROUTES } from "@/constants/routes";
 
 export const createUser = async (_: unknown, formData: FormData) => {
   // 유효성 검사
@@ -25,6 +23,11 @@ export const createUser = async (_: unknown, formData: FormData) => {
     const response = await signUpAPI({ nickname, email, password });
     if (!response) {
       throw new Error("회원가입 중에 문제가 발생했습니다.");
+    } else {
+      return {
+        status: "success",
+        message: "회원가입이 완료되었습니다. 로그인 후 이용해 주세요:)",
+      };
     }
   } catch (err) {
     const error = err as AuthError;
@@ -35,5 +38,4 @@ export const createUser = async (_: unknown, formData: FormData) => {
       errorMessage: "회원가입 중에 문제가 발생했습니다. 다시 시도해 주세요.",
     };
   }
-  redirect(AUTH_ROUTES.LOGIN);
 };

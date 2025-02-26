@@ -39,7 +39,7 @@ export default function LoginForm() {
         router.replace(BASE_URL);
         router.refresh();
         setIsLoading(false);
-      }, 100);
+      }, 0);
     }
   }, [state, setUser, setIsLogin, router]);
 
